@@ -1,7 +1,7 @@
 --- Replaces plain quotation marks with typographic ones.
 --
 -- @script pandoc-quotes.lua
--- @release 0.1.3
+-- @release 0.1.4
 -- @author Odin Kroeger
 -- @copyright 2018 Odin Kroeger
 -- @license MIT
@@ -32,7 +32,7 @@
 local NAME = 'pandoc-quotes.lua'
 
 -- The version of this script.
-local VERSION = '0.1.3'
+local VERSION = '0.1.4'
 
 -- The default language for quotation marks.
 local DEFAULT_LANG = 'en-US'
@@ -108,7 +108,7 @@ function read_yaml_file (fname)
 end
 
 
---- Reads quotation marks from a `quotation-marks` metadata field.
+--- Reads quotation marks from a `quot-marks` metadata field.
 --
 -- @tparam pandoc.MetaValue The content of a metadata field.
 --  Must be either of type pandoc.MetaInlines or pandoc.MetaList.
@@ -189,7 +189,7 @@ do
             if k:match(pattern) then return v end
         end
         if not marks_map[DEFAULT_LANG] then 
-            return nil, lang .. ': is the default language, but missing.'
+            return nil, DEFAULT_LANG .. ': is missing.'
         end
         return marks_map[DEFAULT_LANG]
     end
@@ -209,19 +209,19 @@ do
     -- Prints errors to STDERR.
     function configure (meta)
         local lang = DEFAULT_LANG
-        if meta['quotation-marks'] then
-            MARKS, err = get_marks_from_field(meta['quotation-marks'])
+        if meta['quot-marks'] then
+            MARKS, err = get_marks_from_field(meta['quot-marks'])
             if not MARKS then 
                 warn('metadata field "quoation-marks": ', err)
                 return
             end
-        elseif meta['quotation-mark-lang'] then
-            lang = stringify(meta['quotation-mark-lang'])
+        elseif meta['quot-lang'] then
+            lang = stringify(meta['quot-lang'])
         elseif meta['lang'] then
             lang = stringify(meta['lang'])
         end
         MARKS, err = get_marks_by_language(lang)
-        if not MARKS then 
+        if not MARKS or not MARKS.ldquo then 
             warn(err) 
         end
     end
@@ -236,6 +236,7 @@ do
     -- @treturn {pandoc.Inline} A list with the opening quote (as `Str`),
     --  the content of `quoted`, and the closing quote (as `Str`).
     function insert_quotation_marks (quoted)
+        if not MARKS or not MARKS.ldquo then return end
         local quote_type = quoted.c[1]
         local inlines = quoted.c[2]
         if quote_type == 'DoubleQuote' then
