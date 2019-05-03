@@ -16,17 +16,16 @@ pandoc-quotes.lua - Replaces plain quotation marks with typographic ones
 
 # DESCRIPTION
 
-**pandoc-quotes** is a filter for **pandoc** that replaces plain, that is,
-non-typographic, quotes with typographic ones for languages other than
-English. (It's not that it doesn't work with English, too; it's just that
-you don't need it.)
+**pandoc-quotes** is a filter for **pandoc** that replaces plain, 
+that is, non-typographic, quotes with typographic ones for languages
+other than US English.
 
 You can define which typographic quotation marks to replace plain ones with
-by setting either a document's *quotation-marks*, *quotation-language*,
-or *lang* metadata field.
+by setting either a document's *quot-marks*, *quot-lang*, or *lang*
+metadata field.
 
 
-## quotation-marks
+## quot-marks
 
 A list of four strings, where the first item lists the primary left quotation
 mark, the second the primary right quotation mark, the third the secondary
@@ -36,7 +35,7 @@ For example:
 
 ```yaml
 ---
-quotation-marks:
+quot-marks:
     - ''
     - ''
     - '
@@ -53,11 +52,11 @@ For example:
 
 ```yaml
 ---
-quotation-marks: ""''
+quot-marks: ""''
 ...
 ```
 
-If *quotation-marks* is set, the other fields are ignored.
+If *quot-marks* is set, the other fields are ignored.
 
 
 # quotation-lang
@@ -69,7 +68,7 @@ For example:
 
 ```yaml
 ---
-quotation-lang: de-AT
+quot-lang: de-AT
 ...
 ```
 
@@ -78,13 +77,13 @@ For example, "it-CH" (i.e., Italian as spoken in Switzerland) is fine,
 but "it-756" (also Italian as spoken in Switzerland) will return the quotation
 marks for "it" (i.e., Italian as spoken in general).
 
-If *quotation-marks* is set, *quotation-lang* is ignored.
+If *quot-marks* is set, *quot-lang* is ignored.
 
 
 # lang
 
-The format of *lang* is the same as for *quotation-lang*. If *quotation-marks*
-or *quotation-lang* is set, *lang* is ignored. 
+The format of *lang* is the same as for *quot-lang*. If *quot-marks*
+or *quot-lang* is set, *lang* is ignored. 
 
 For example:
 
@@ -104,7 +103,7 @@ data directory.
 *quot-marks.yaml* should be a UTF-8 encoded YAML file. It should
 contain mappings of RFC 5646-like language codes (e.g., "pt-BR", "es")
 to lists of quotation marks, which are given in the same format as
-for the *quotation-marks* metadata field.
+for the *quot-marks* metadata field.
 
 See the *quot-marks.yaml* file that comes with **pandoc-quotes.lua**
 for details.
