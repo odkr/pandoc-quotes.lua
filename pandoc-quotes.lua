@@ -240,12 +240,16 @@ do
         local quote_type = quoted.c[1]
         local inlines = quoted.c[2]
         if quote_type == 'DoubleQuote' then
-            return {MARKS.ldquo, unpack(inlines), MARKS.rdquo}
+            insert(inlines, 1, MARKS.ldquo)
+            insert(inlines, MARKS.rdquo)
         elseif quote_type == 'SingleQuote' then
-            return {MARKS.lsquo, unpack(inlines), MARKS.rsquo}
+            insert(inlines, 1, MARKS.lsquo)
+            insert(inlines, MARKS.rsquo)
         else
             warn(quote_type, ': unknown quote type.')
+            return
         end
+        return inlines
     end
 end
 
