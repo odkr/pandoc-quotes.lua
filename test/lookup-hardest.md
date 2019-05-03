@@ -1,5 +1,5 @@
 ---
-quotation-lang: en-XX
+lang: en-XX
 ...
 
 This is a "test".
