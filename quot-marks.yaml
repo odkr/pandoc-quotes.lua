@@ -2,7 +2,7 @@
 # quot-marks.yaml
 # ===============
 #
-# A list of mappins from RFC 5646-ish language codes to quotation marks.
+# A list of mappings from RFC 5646-ish language codes to quotation marks.
 #
 # This file should be a valid [YAML](<http://yaml.org/>) file, which contains
 # pairs of RFC 5646-ish language codes (e.g., "en-US", "pt-BR", "de", "es")
@@ -26,7 +26,7 @@
 # code (though only the language and country tags are supported) and the
 # second item is a list of quotation marks, in the following order:
 # primary left, primary right, secondary left, secondary right.
-
+#
 # If each quotation mark consists of precisely one Unicode character 
 # (it may span multiple bytes), you can write the list as a string,
 # like so: „“‚‘.
