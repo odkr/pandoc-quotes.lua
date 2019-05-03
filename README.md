@@ -2,11 +2,11 @@
 
 `pandoc-quotes.lua` is a filter for [Pandoc](https://www.pandoc.org/) that
 replaces plain, that is, non-typographic, quotation marks with typographic
-ones for languages other than English.
+ones for languages other than US English.
 
 You can define which typographic quotation marks to replace plain ones with by
-setting either a document's `quotation-marks`, `quotation-language`, or `lang`
-metadata field. Typically, it should 'just work'.
+setting either a document's `quot-marks`, `quot-lang`, or `lang` metadata
+field. Typically, it should 'just work'.
 
 See the [manual page](man/pandoc-quotes.lua.md) for details.
 
