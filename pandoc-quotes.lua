@@ -34,9 +34,6 @@ local NAME = 'pandoc-quotes.lua'
 -- The version of this script.
 local VERSION = '0.1.6'
 
--- The default language for quotation marks.
-local DEFAULT_LANG = 'en-US'
-
 
 -- Shorthands
 -- ==========
@@ -188,10 +185,6 @@ do
         for k, v in pairs(marks_map) do 
             if k:match(pattern) then return v end
         end
-        if not marks_map[DEFAULT_LANG] then 
-            return nil, DEFAULT_LANG .. ': is missing.'
-        end
-        return marks_map[DEFAULT_LANG]
     end
 end
 
@@ -208,7 +201,7 @@ do
     --
     -- Prints errors to STDERR.
     function configure (meta)
-        local lang = DEFAULT_LANG
+        local lang = nil
         if meta['quot-marks'] then
             MARKS, err = get_marks_from_field(meta['quot-marks'])
             if not MARKS then 
@@ -220,9 +213,11 @@ do
         elseif meta['lang'] then
             lang = stringify(meta['lang'])
         end
-        MARKS, err = get_marks_by_language(lang)
-        if not MARKS or not MARKS.ldquo then 
-            warn(err) 
+        if lang then
+            MARKS, err = get_marks_by_language(lang)
+            if not MARKS or not MARKS.ldquo then 
+                warn(err) 
+            end
         end
     end
 
