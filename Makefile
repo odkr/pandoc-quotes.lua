@@ -1,5 +1,13 @@
-test: test-simple test-lookup test-lookup-harder test-lookup-hardest \
+test: test-nothing test-simple \
+	test-lookup test-lookup-harder test-lookup-hardest \
 	test-more-words
+
+test-nothing:
+	rm -f test/nothing-is.html
+	pandoc -f markdown-smart \
+		--lua-filter pandoc-quotes.lua test/nothing.md \
+		-o test/nothing-is.html
+	cmp test/nothing-is.html test/nothing-should.html
 
 test-simple:
 	rm -f test/simple-is.html
@@ -35,4 +43,5 @@ test-more-words:
 		-o test/more-words-is.html
 	cmp test/more-words-is.html test/more-words-should.html
 
-.PHONY: test test-simple test-lookup test-lookup-harder test-lookup-hardest
+.PHONY: test test-simple test-nothing \
+	test-lookup test-lookup-harder test-lookup-hardest
