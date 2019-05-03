@@ -38,9 +38,9 @@
 # are going to use them anyway. And they should get a reasonable result,
 # not a runtime error.
 #
-# The order in which languages are listed matters. If you define variants 
-# for a language that is spoken in different countries, start with the one
-# a user is most likely to mean when they don't specify a country tag.
+# The order in which languages are listed is meaningless. If you define 
+# variants for a language that is spoken in different countries, also
+# define a 'default' for the language alone, without the country tag.
 
 bo: 「」『』
 bs: ””’’
@@ -51,6 +51,7 @@ da: »«›‹
 de: „“‚‘
 de-CH: «»‹›
 el: «»“”
+en: “”‘’
 en-US: “”‘’
 en-GB: ‘’“”
 en-CA: “”‘’
