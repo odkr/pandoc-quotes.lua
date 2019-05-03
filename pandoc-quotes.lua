@@ -1,7 +1,7 @@
 --- Replaces plain quotation marks with typographic ones.
 --
 -- @script pandoc-quotes.lua
--- @release 0.1.5
+-- @release 0.1.6
 -- @author Odin Kroeger
 -- @copyright 2018 Odin Kroeger
 -- @license MIT
@@ -32,7 +32,7 @@
 local NAME = 'pandoc-quotes.lua'
 
 -- The version of this script.
-local VERSION = '0.1.5'
+local VERSION = '0.1.6'
 
 -- The default language for quotation marks.
 local DEFAULT_LANG = 'en-US'
