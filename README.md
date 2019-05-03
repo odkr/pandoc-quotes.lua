@@ -39,7 +39,7 @@ following commands into a bourne shell:
 ```sh
 (
     set -Cefu
-    NAME=pandoc-quotes.lua VERS=0.1.6
+    NAME=pandoc-quotes.lua VERS=0.1.7
     URL="https://github.com/odkr/${NAME:?}/archive/v${VERS:?}.tar.gz"
     MAN="/usr/local/share/man/man1"
     FILTERS="${HOME:?}/.pandoc/filters"
