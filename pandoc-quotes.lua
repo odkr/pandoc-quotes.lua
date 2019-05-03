@@ -74,7 +74,7 @@ end
 local SCRIPT_DIR = split_path(PANDOC_SCRIPT_FILE) or '.'
 
 -- The search path for 'quot-marks.yaml'.
-local QUOT_MARKS_PATH = {SCRIPT_DIR .. PATH_SEP .. NAME .. VERSION, 
+local QUOT_MARKS_PATH = {SCRIPT_DIR .. PATH_SEP .. NAME .. '-' .. VERSION, 
     SCRIPT_DIR, PANDOC_STATE.user_data_dir}
 
 
