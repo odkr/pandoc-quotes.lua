@@ -59,8 +59,7 @@ If \f[I]quotation-marks\f[R] is set, the other fields are ignored.
 .SH quotation-lang
 .PP
 An RFC 5646-like code for the language the quotation marks of which
-shall be used (e.g., \[dq]en-US\[dq], \[dq]pt-BR\[dq], \[dq]de\[dq],
-\[dq]es\[dq]).
+shall be used (e.g., \[dq]pt-BR\[dq], \[dq]es\[dq]).
 .PP
 For example:
 .IP
@@ -88,12 +87,6 @@ The format of \f[I]lang\f[R] is the same as for
 If \f[I]quotation-marks\f[R] or \f[I]quotation-lang\f[R] is set,
 \f[I]lang\f[R] is ignored.
 .PP
-\f[I]lang\f[R] is the metadata field \f[B]pandoc-citeproc\f[R] uses to
-define what language your reference list should be in.
-If \f[B]pandoc-citeproc\f[R] and \f[B]pandoc-quotes.lua\f[R] both
-support your language, you need not set \f[I]quotation-lang\f[R],
-\f[B]pandoc-quotes.lua\f[R] will use \f[I]lang\f[R], too.
-.PP
 For example:
 .IP
 .nf
@@ -109,31 +102,31 @@ You can add quotation marks for unsupported languages, or override the
 defaults, by placing a file named \f[I]quot-marks.yaml\f[R] in your
 pandoc user data directory.
 .PP
-\f[I]quot-marks.yaml\f[R] should be a, UTF-8 encoded, YAML file.
+\f[I]quot-marks.yaml\f[R] should be a UTF-8 encoded YAML file.
 It should contain mappings of RFC 5646-like language codes (e.g.,
-\[dq]en-US\[dq], \[dq]pt-BR\[dq], \[dq]de\[dq], \[dq]es\[dq]) to lists
-of quotation marks, which are given in the same format as for
-\f[I]quotation-marks\f[R].
+\[dq]pt-BR\[dq], \[dq]es\[dq]) to lists of quotation marks, which are
+given in the same format as for the \f[I]quotation-marks\f[R] metadata
+field.
 .PP
 See the \f[I]quot-marks.yaml\f[R] file that comes with
 \f[B]pandoc-quotes.lua\f[R] for details.
 .SH CAVEATS
 .PP
-\f[B]pandoc\f[R] represents documents as abstract syntax trees, and
-quotations are nodes in that tree.
-However, \f[B]pandoc-quotes.lua\f[R] replaces those nodes with the
-content of the quotation, adding proper quotation marks.
-Put another way, \f[B]pandoc-quotes.lua\f[R] pushes quotations from the
-syntax of a document\[aq]s representation into its semantics.
-As a consequence, filters running after \f[B]pandoc-quotes\f[R]
-won\[aq]t recognise quotes.
+\f[B]pandoc\f[R] represents documents as abstract syntax trees
+internally, and quotations are nodes in that tree.
+However, \f[B]pandoc-quotes.lua\f[R] replaces those nodes with their
+content, adding proper quotation marks.
+That is, \f[B]pandoc-quotes.lua\f[R] pushes quotations from the syntax
+of a document\[aq]s representation into its semantics.
 That being so, you should \f[I]not\f[R] use \f[B]pandoc-quotes.lua\f[R]
 with output formats that represent quotes syntactically (e.g., HTML,
 LaTeX, ConTexT).
-Also, it should be the last or one of the last filters you apply.
+Moroever, filters running after \f[B]pandoc-quotes\f[R] won\[aq]t
+recognise quotes.
+So, it should be the last or one of the last filters you apply.
 .PP
-Support for quotation marks of different languages is incomplete and
-likely erroneous.
+Support for quotation marks of different languages is certainly
+incomplete and likely erroneous.
 See <https://github.com/odkr/pandoc-quotes.lua> if you\[aq]d like to
 help with this.
 .PP

@@ -63,7 +63,7 @@ If *quotation-marks* is set, the other fields are ignored.
 # quotation-lang
 
 An RFC 5646-like code for the language the quotation marks of
-which shall be used (e.g., "en-US", "pt-BR", "de", "es").
+which shall be used (e.g., "pt-BR", "es").
 
 For example:
 
@@ -84,12 +84,7 @@ If *quotation-marks* is set, *quotation-lang* is ignored.
 # lang
 
 The format of *lang* is the same as for *quotation-lang*. If *quotation-marks*
-or *quotation-lang* is set, *lang* is ignored.
-
-*lang* is the metadata field **pandoc-citeproc** uses to define what language
-your reference list should be in. If **pandoc-citeproc** and 
-**pandoc-quotes.lua** both support your language, you need not set 
-*quotation-lang*, **pandoc-quotes.lua** will use *lang*, too.
+or *quotation-lang* is set, *lang* is ignored. 
 
 For example:
 
@@ -106,10 +101,10 @@ You can add quotation marks for unsupported languages, or override the
 defaults, by placing a file named *quot-marks.yaml* in your pandoc user 
 data directory.
 
-*quot-marks.yaml* should be a, UTF-8 encoded, YAML file. It should
-contain mappings of RFC 5646-like language codes (e.g., "en-US", "pt-BR",
-"de", "es") to lists of quotation marks, which are given in the same
-format as for *quotation-marks*.
+*quot-marks.yaml* should be a UTF-8 encoded YAML file. It should
+contain mappings of RFC 5646-like language codes (e.g., "pt-BR", "es")
+to lists of quotation marks, which are given in the same format as
+for the *quotation-marks* metadata field.
 
 See the *quot-marks.yaml* file that comes with **pandoc-quotes.lua**
 for details.
@@ -117,19 +112,19 @@ for details.
 
 # CAVEATS
 
-**pandoc** represents documents as abstract syntax trees, and quotations are
-nodes in that tree. However, **pandoc-quotes.lua** replaces those nodes with
-the content of the quotation, adding proper quotation marks. Put another way,
+**pandoc** represents documents as abstract syntax trees internally, and
+quotations are nodes in that tree. However, **pandoc-quotes.lua** replaces
+those nodes with their content, adding proper quotation marks. That is,
 **pandoc-quotes.lua** pushes quotations from the syntax of a document's
-representation into its semantics. As a consequence, filters running after
-**pandoc-quotes** won't recognise quotes. That being so, you should *not* 
+representation into its semantics. That being so, you should *not* 
 use **pandoc-quotes.lua** with output formats that represent quotes
-syntactically (e.g., HTML, LaTeX, ConTexT). Also, it should be the last or
+syntactically (e.g., HTML, LaTeX, ConTexT). Moroever, filters running after
+**pandoc-quotes** won't recognise quotes. So, it should be the last or
 one of the last filters you apply.
 
-Support for quotation marks of different languages is incomplete and likely
-erroneous. See <https://github.com/odkr/pandoc-quotes.lua> if you'd like to
-help with this.
+Support for quotation marks of different languages is certainly incomplete
+and likely erroneous. See <https://github.com/odkr/pandoc-quotes.lua> if
+you'd like to help with this.
 
 **pandoc-quotes.lua** is Unicode-agnostic.
 
