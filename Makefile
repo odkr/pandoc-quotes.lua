@@ -1,4 +1,5 @@
-test: test-simple test-lookup test-lookup-harder test-lookup-hardest
+test: test-simple test-lookup test-lookup-harder test-lookup-hardest \
+	test-more-words
 
 test-simple:
 	rm -f test/simple-is.html
@@ -11,6 +12,10 @@ test-lookup:
 	pandoc --lua-filter pandoc-quotes.lua test/lookup.md \
 		-o test/lookup-is.html
 	cmp test/lookup-is.html test/lookup-should.html
+	rm -f test/lookup-core-is.html
+	pandoc --lua-filter pandoc-quotes.lua test/lookup-core.md \
+		-o test/lookup-core-is.html
+	cmp test/lookup-core-is.html test/lookup-core-should.html
 
 test-lookup-harder:
 	rm -f test/lookup-harder-is.html
@@ -24,5 +29,10 @@ test-lookup-hardest:
 		-o test/lookup-hardest-is.html
 	cmp test/lookup-hardest-is.html test/lookup-hardest-should.html
 
+test-more-words:
+	rm -f test/more-words-is.html
+	pandoc --lua-filter pandoc-quotes.lua test/more-words.md \
+		-o test/more-words-is.html
+	cmp test/more-words-is.html test/more-words-should.html
 
 .PHONY: test test-simple test-lookup test-lookup-harder test-lookup-hardest
