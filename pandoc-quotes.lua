@@ -171,7 +171,8 @@ do
     --
     -- @tparam string lang An RFC 5646-ish language code.
     -- @treturn {ldquo=Str,rdquo=Str,lsquo=Str,rsquo=Str} 
-    --  A table of quotation marks or `nil` if an error occurred.
+    --  A table of quotation marks or `nil` if the language wasn't found 
+    --  or an error occurred.
     -- @treturn string An error message if an error occurred.
     function get_marks_by_language (lang)
         if not marks_map then marks_map = read_lookup_tables() end
@@ -216,7 +217,11 @@ do
         if lang then
             MARKS, err = get_marks_by_language(lang)
             if not MARKS or not MARKS.ldquo then 
-                warn(err) 
+                if err then 
+                    warn(err)
+                else
+                    warn(lang, ': unknown language.')
+                end
             end
         end
     end
