@@ -16,13 +16,12 @@ pandoc-quotes.lua - Replaces plain quotation marks with typographic ones
 
 # DESCRIPTION
 
-**pandoc-quotes** is a filter for **pandoc** that replaces plain, 
-that is, non-typographic, quotes with typographic ones for languages
-other than US English.
+**pandoc-quotes.lua** is a filter for **pandoc** that replaces non-typographic
+quotation marks with typographic ones for languages other than US English.
 
 You can define which typographic quotation marks to replace plain ones with
 by setting either a document's *quot-marks*, *quot-lang*, or *lang*
-metadata field.
+metadata field. If none of these is set, **pandoc-quotes.lua** does nothing.
 
 
 ## quot-marks
