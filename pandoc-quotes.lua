@@ -217,7 +217,7 @@ do
         if lang then
             MARKS, err = get_marks_by_language(lang)
             if not MARKS or not MARKS.ldquo then 
-                if err then 
+                if err ~= '' then 
                     warn(err)
                 else
                     warn(lang, ': unknown language.')
