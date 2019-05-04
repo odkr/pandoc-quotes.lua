@@ -136,9 +136,9 @@ end
 -- the global variables `QUOT_MARKS_PATH`. A `quot-marks.yaml` file is a YAML
 -- file that maps RFC 5646-ish language codes to quotation marks. See the one
 -- that ships with this script for the syntax and further details. Definitions
--- in files parsed later override those in files parsed earlier.
+-- in files read later override definitions in files read earlier.
 --
--- @treturn {[string]=tab} A mapping of RFC 5646-ish language codes to
+-- @treturn {[string]=tab,...} A mapping of RFC 5646-ish language codes to
 --  tables of quotation marks as returned by `get_marks_from_field`
 --  or `nil` if an error occurred.
 -- @treturn string An error message if an error occurred.
@@ -150,7 +150,10 @@ function read_lookup_tables ()
         if data then
             for lang, field in pairs(data) do
                 local marks, err = get_marks_from_field(field)
-                if marks == nil then return nil, err end
+                if marks == nil then
+                    return nil, string.format('%s: lang "%s": %s',
+                        fname, lang, err)
+                end
                 ret[lang] = marks
             end
         elseif not errno or errno ~= 2 then
@@ -190,13 +193,13 @@ do
 end
 
 do
-    -- A variable common to `configure` and `insert_quotation_marks`
-    -- that holds the quotation marks for the language of the document.
+    -- Holds the quotation marks for the language of the document.
+    -- Common to `configure` and `insert_quotation_marks`.
     local MARKS = nil
 
-    --- Determines the language of the document.
+    --- Determines the quotation marks for the document.
     --
-    -- Stores it in `MARKS`, which is shared with `insert_quotation_marks`.
+    -- Stores them in `MARKS`, which it shares with `insert_quotation_marks`.
     --
     -- @tparam pandoc.Meta The document's metadata.
     --
@@ -216,27 +219,24 @@ do
         end
         if lang then
             MARKS, err = get_marks_by_language(lang)
-            if not MARKS or not MARKS.ldquo then 
-                if err ~= '' then 
-                    warn(err)
-                else
-                    warn(lang, ': unknown language.')
-                end
+            if not MARKS then 
+                if not err then err = lang .. ': unknown language.' end
+                warn(err)
             end
         end
     end
 
 
-    --- Replaces pandoc.Quoted elements with quoted text.
+    --- Replaces quoted elements with quoted text.
     --
     -- Uses the quotioatn marks stored in `MARKS`, 
-    -- which is shared with `configure`.
+    -- which it shares with `configure`.
     --
     -- @tparam pandoc.Quoted quoted A quoted element.
-    -- @treturn {pandoc.Inline} A list with the opening quote (as `Str`),
-    --  the content of `quoted`, and the closing quote (as `Str`).
+    -- @treturn {Str,pandoc.Inline,...,Str} A list with the opening quote 
+    --  (as `Str`), the content of `quoted`, and the closing quote (as `Str`).
     function insert_quotation_marks (quoted)
-        if not MARKS or not MARKS.ldquo then return end
+        if not MARKS then return end
         local quote_type = quoted.c[1]
         local inlines = quoted.c[2]
         if quote_type == 'DoubleQuote' then
