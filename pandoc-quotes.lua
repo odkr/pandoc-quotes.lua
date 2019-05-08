@@ -157,7 +157,7 @@
 --
 --
 -- @script pandoc-quotes.lua
--- @release 0.1.8b
+-- @release 0.1.8
 -- @author Odin Kroeger
 -- @copyright 2018 Odin Kroeger
 -- @license MIT
