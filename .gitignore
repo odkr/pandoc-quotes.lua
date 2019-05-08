@@ -1,4 +1,5 @@
 .DS_Store
+test/tmp
 test/simple-is.html
 test/lookup-harder-is.html
 test/simple-is.txt
