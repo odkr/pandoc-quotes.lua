@@ -41,15 +41,13 @@ following commands into a bourne shell:
     set -Cefu
     NAME=pandoc-quotes.lua VERS=0.1.7
     URL="https://github.com/odkr/${NAME:?}/archive/v${VERS:?}.tar.gz"
-    MAN="/usr/local/share/man/man1"
     FILTERS="${HOME:?}/.pandoc/filters"
     mkdir -p "${FILTERS:?}"
-    cd -P "$FILTERS" || exit
     {
         curl -L "$URL" || ERR=$?
         [ "${ERR-0}" -eq 127 ] && wget -q -O - "$URL"
     } | tar xz
-    mv "$NAME-$VERS/pandoc-quotes.lua" .
+    mv "$NAME-$VERS/pandoc-quotes.lua" "$FILTERS"
 )
 ```
 
