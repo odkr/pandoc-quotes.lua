@@ -1,7 +1,7 @@
 ---
 title: PANDOC-QUOTES.LUA(1)
 author: Odin Kroeger
-Date: May 3, 2019
+Date: May 9, 2019
 ---
 
 # NAME
@@ -23,6 +23,8 @@ You can define which typographic quotation marks to replace plain ones with
 by setting either a document's *quot-marks*, *quot-lang*, or *lang*
 metadata field. If none of these is set, **pandoc-quotes.lua** does nothing.
 
+You can add your own mapping of a language to quotation marks or override
+the default ones by setting *quot-marks-by-lang*.
 
 ## quot-marks
 
@@ -96,16 +98,20 @@ lang: de-AT
 # ADDING LANGUAGES
 
 You can add quotation marks for unsupported languages, or override the
-defaults, by placing a file named *quot-marks.yaml* in your pandoc user 
-data directory.
+defaults, by setting the metadata field *quot-marks-by-lang* to a maping
+of RFC 5646-like language codes (e.g., "pt-BR", "es") to lists of quotation
+marks, which are given in the same format as for the *quot-marks*
+metadata field.
 
-*quot-marks.yaml* should be a UTF-8 encoded YAML file. It should
-contain mappings of RFC 5646-like language codes (e.g., "pt-BR", "es")
-to lists of quotation marks, which are given in the same format as
-for the *quot-marks* metadata field.
+For example:
 
-See the *quot-marks.yaml* file that comes with **pandoc-quotes.lua**
-for details.
+```yaml
+---
+quot-marks-by-lang:
+    abc-XYZ: ""''
+lang: abc-XYZ
+...
+```
 
 
 # CAVEATS
