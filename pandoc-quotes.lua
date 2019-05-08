@@ -1,10 +1,11 @@
 --- Replaces plain quotation marks with typographic ones.
 --
--- @script pandoc-quotes.lua
--- @release 0.1.7
--- @author Odin Kroeger
--- @copyright 2018 Odin Kroeger
--- @license MIT
+-- # AUTHOR
+--
+-- Copyright 2019 Odin Kroeger
+--
+--
+-- # LICENSE
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to
@@ -23,85 +24,165 @@
 -- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 -- IN THE SOFTWARE.
+--
+--
+-- @script pandoc-quotes.lua
+-- @release 0.1.8b
+-- @author Odin Kroeger
+-- @copyright 2018 Odin Kroeger
+-- @license MIT
 
 
--- Constants
--- =========
+-- # INITIALISATION
 
--- The name of this script.
-local NAME = 'pandoc-quotes.lua'
+local pandoc_quotes = {}
 
--- The version of this script.
-local VERSION = '0.1.7'
+local pairs = pairs
+local require = require
 
-
--- Shorthands
--- ==========
-
+local stderr = io.stderr
+local format = string.format
 local concat = table.concat
 local insert = table.insert
 local unpack = table.unpack
 
-local text = require 'text'
-local sub = text.sub
-
 local stringify = pandoc.utils.stringify
 local Str = pandoc.Str
 
+local _ENV = pandoc_quotes
 
--- Initialisation
--- ==============
+local text = require 'text'
+local sub = text.sub
 
--- The path seperator of the operating system
-local PATH_SEP = sub(package.config, 1, 1)
 
---- Splits a file's path into its directory and its filename part.
+-- # CONSTANTS
+
+--- The name of this script.
+NAME = 'pandoc-quotes.lua'
+
+
+--- A list of mappings from RFC 5646-ish language codes to quotation marks.
+-- 
+-- I have adopted the list below from:
+-- <https://en.wikipedia.org/w/index.php?title=Quotation_mark&oldid=836731669>
+-- 
+-- I tried to come up with reasonable defaults for secondary quotes for
+-- language that, according to the Wikipedia, don't have any.
 --
--- @tparam string path The path to the file.
--- @treturn string The file's path.
--- @treturn string The file's name.
-do
-    local split_expr = '(.-)[\\' .. PATH_SEP .. ']([^\\' .. PATH_SEP .. ']-)$'
-    function split_path (path)
-        return path:match(split_expr)
-    end
-end
+-- Adding languages:
+--
+-- Add an ordered pair, where the first item is an RFC 5646 language
+-- code (though only the language and country tags are supported) and the
+-- second item is a list of quotation marks, in the following order:
+-- primary left, primary right, secondary left, secondary right.
+--
+-- You have to list four quotation marks, even if the langauge you add does
+-- not use secondary quotation marks. Just come up with something that makes
+-- sense. This is because a user may, rightly, find that just because their
+-- language does not 'officially' have secondary quotation marks, they
+-- are going to use them anyway. And they should get a reasonable result,
+-- not a runtime error.
+--
+-- The order in which languages are listed is meaningless. If you define 
+-- variants for a language that is spoken in different countries, also
+-- define a 'default' for the language alone, without the country tag.
+QUOT_MARKS_BY_LANG = {
+    bo = {'「', '」', '『', '』'},
+    bs = {'”', '”', '’', '’'},
+    cn = {'「', '」', '『', '』'},
+    cs = {'„', '“', '‚', '‘'},
+    cy = {'‘', '’', '“', '”'},
+    da = {'»', '«', '›', '‹'},
+    de = {'„', '“', '‚', '‘'},
+    ['de-CH'] = {'«', '»', '‹', '›'},
+    el = {'«', '»', '“', '”'},
+    en = {'“', '”', '‘', '’'},
+    ['en-US'] = {'“', '”', '‘', '’'},
+    ['en-GB'] = {'‘', '’', '“', '”'},
+    ['en-UK'] = {'‘', '’', '“', '”'},
+    ['en-CA'] = {'“', '”', '‘', '’'},
+    eo = {'“', '”', '‘', '’'},
+    es = {'«', '»', '“', '”'},
+    et = {'„', '“', '‚', '‘'},
+    fi = {'”', '”', '’', '’'},
+    fil = {'“', '”', '‘', '’'},
+    fa = {'«', '»', '‹', '›'},
+    fr = {'«', '»', '‹', '›'},
+    ga = {'“', '”', '‘', '’'},
+    gd = {'‘', '’', '“', '”'},
+    gl = {'«', '»', '‹', '›'},
+    he = {'“', '”', '‘', '’'},
+    hi = {'“', '”', '‘', '’'},
+    hu = {'„', '”', '»', '«'},
+    hr = {'„', '“', '‚', '‘'},
+    ia = {'“', '”', '‘', '’'},
+    id = {'“', '”', '‘', '’'},
+    is = {'„', '“', '‚', '‘'},
+    it = {'«', '»', '“', '”'},
+    ['it-CH'] = {'«', '»', '‹', '›'},
+    ja = {'「', '」', '『', '』'},
+    jbo = {'lu', 'li\'u', 'lu', 'li\'u'},
+    ka = {'„', '“', '‚', '‘'},
+    khb = {'《', '》', '〈', '〉'},
+    kk = {'«', '»', '‹', '›'},
+    km = {'«', '»', '‹', '›'},
+    ko = {'《', '》', '〈', '〉'},
+    ['ko-KR'] = {'“', '”', '‘', '’'},
+    lt = {'„', '“', '‚', '‘'},
+    lv = {'„', '“', '‚', '‘'},
+    lo = {'«', '»', '‹', '›'},
+    nl = {'„', '”', '‚', '’'},
+    mk = {'„', '“', '’', '‘'},
+    mn = {'«', '»', '‹', '›'},
+    mt = {'“', '”', '‘', '’'},
+    no = {'«', '»', '«', '»'},
+    pl = {'„', '”', '»', '«'},
+    ps = {'«', '»', '‹', '›'},
+    pt = {'«', '»', '“', '”'},
+    ['pt-BR'] = {'“', '”', '‘', '’'},
+    rm = {'«', '»', '‹', '›'},
+    ro = {'„', '”', '»', '«'},
+    ru = {'«', '»', '“', '”'},
+    sk = {'„', '“', '‚', '‘'},
+    sl = {'„', '“', '‚', '‘'},
+    sq = {'„', '“', '‚', '‘'},
+    sr = {'„', '“', '’', '’'},
+    sv = {'”', '”', '’', '’'},
+    tdd = {'「', '」', '『', '』'},
+    ti = {'«', '»', '‹', '›'},
+    th = {'“', '”', '‘', '’'},
+    thi = {'「', '」', '『', '』'},
+    tr = {'«', '»', '‹', '›'},
+    ug = {'«', '»', '‹', '›'},
+    uk = {'«', '»', '„', '“'},
+    uz = {'«', '»', '„', '“'},
+    vi = {'“', '”', '‘', '’'},
+    wen = {'„', '“', '‚', '‘'}
+}
 
--- The directory the script is located in.
-local SCRIPT_DIR = split_path(PANDOC_SCRIPT_FILE) or '.'
 
--- The search path for 'quot-marks.yaml'.
-local QUOT_MARKS_PATH = {SCRIPT_DIR .. PATH_SEP .. NAME .. '-' .. VERSION, 
-    SCRIPT_DIR, PANDOC_STATE.user_data_dir}
-
-
--- Functions
--- =========
+-- # FUNCTIONS
 
 --- Prints warnings to STDERR.
 --
--- @tparam string ... Strings to be written to STDERR.
+-- @tparam string str A string format to be written to STDERR.
+-- @tparam string ... Arguments to that format.
 --
--- Prefixes messages with 'pandoc-quotes.lua: ' and appends a linefeed.
-function warn (...)
-    io.stderr:write(NAME, ': ', concat({...}), '\n')
+-- Prefixes messages with `NAME` and ": ". Appends a linefeed.
+function warn (str, ...)
+    stderr:write(NAME, ': ', format(str, ...), '\n')
 end
 
 
---- Reads a YAML file and returns it as pandoc.Meta block.
+--- Applies a function to every element of a list.
 --
--- @tparam string fname The name of the file.
--- @treturn pandoc.Meta The data or `nil` if an error occurred.
--- @treturn string An error message if an error occurred.
--- @treturn number An error number if applicable.
-function read_yaml_file (fname)
-    local f, err, errno = io.open(fname, 'r')
-    if not f then return nil, err, errno end
-    local yaml, err = f:read('a')
-    if not yaml then return nil, err end
-    local ok, err = f:close()
-    if not ok then return nil, err end
-    return pandoc.read('---\n' .. yaml .. '\n...\n').meta
+-- @tparam func f The function.
+-- @tparam tab list The list.
+-- @treturn tab The return values of `f`.
+function map (f, list)
+    local ret = {}
+    for k, v in pairs(list) do ret[k] = f(v) end
+    return ret
 end
 
 
@@ -109,148 +190,98 @@ end
 --
 -- @tparam pandoc.MetaValue The content of a metadata field.
 --  Must be either of type pandoc.MetaInlines or pandoc.MetaList.
--- @treturn {ldquo=Str,rdquo=Str,lsquo=Str,rsquo=Str} 
---  A table of quotation marks or `nil` if an error occurred.
--- @treturn string An error message if an error occurred.
-function get_marks_from_field (field)
-    local i = nil
+-- @treturn {Str,Str,Str,Str} A table of quotation marks 
+--  or `nil` if an error occurred.
+-- @treturn string An error message, if applicable.
+function get_marks (field)
+    local i
     if field.t == 'MetaInlines' then
-        i = function(j) 
-            local marks = stringify(field)
-            return Str(sub(marks, j, j))
-        end
+        local marks = stringify(field)
+        i = function(j) return sub(marks, j, j) end
     elseif field.t == 'MetaList' then
-        i = function(j) 
-            return Str(stringify(field[j]))
-        end
+        local marks = map(stringify, field)
+        i = function(j) return marks[j] end
     else
         return nil, 'neither a string nor a list.'
     end
-    return {ldquo = i(1), rdquo = i(2), lsquo = i(3), rsquo = i(4)}
+    return {i(1), i(2), i(3), i(4)}
 end
 
-
---- Reads quotation mark lookup tables.
---
--- Searches for files called `quot-marks.yaml` in every directory listed in
--- the global variables `QUOT_MARKS_PATH`. A `quot-marks.yaml` file is a YAML
--- file that maps RFC 5646-ish language codes to quotation marks. See the one
--- that ships with this script for the syntax and further details. Definitions
--- in files read later override definitions in files read earlier.
---
--- @treturn {[string]=tab,...} A mapping of RFC 5646-ish language codes to
---  tables of quotation marks as returned by `get_marks_from_field`
---  or `nil` if an error occurred.
--- @treturn string An error message if an error occurred.
-function read_lookup_tables ()
-    local ret = {}
-    for i, dir in ipairs(QUOT_MARKS_PATH) do
-        local fname = dir .. PATH_SEP .. 'quot-marks.yaml'
-        local data, err, errno = read_yaml_file(fname)
-        if data then
-            for lang, field in pairs(data) do
-                local marks, err = get_marks_from_field(field)
-                if marks == nil then
-                    return nil, string.format('%s: lang "%s": %s',
-                        fname, lang, err)
-                end
-                ret[lang] = marks
-            end
-        elseif not errno or errno ~= 2 then
-            return nil, err
-        end
-    end 
-    return ret
-end
-
-
-do
-    local marks_map = nil
-
-    -- Retrieves quotation marks by language.
-    --
-    -- Quotation marks are defined in `quot-marks.yaml` files.
-    -- See `read_lookup_tables` for details.
-    --
-    -- @tparam string lang An RFC 5646-ish language code.
-    -- @treturn {ldquo=Str,rdquo=Str,lsquo=Str,rsquo=Str} 
-    --  A table of quotation marks or `nil` if the language wasn't found 
-    --  or an error occurred.
-    -- @treturn string An error message if an error occurred.
-    function get_marks_by_language (lang)
-        if not marks_map then marks_map = read_lookup_tables() end
-        if not lang:match('^%a+%-?%a*$') then
-            return nil, lang .. ': not an RFC 5646-like language code.'
-        end
-        if marks_map[lang] then return marks_map[lang] end
-        lang = lang:match('(%a+)%-?')
-        if marks_map[lang] then return marks_map[lang] end
-        local pattern = '^' .. lang .. '%-'
-        for k, v in pairs(marks_map) do 
-            if k:match(pattern) then return v end
-        end
-    end
-end
 
 do
     -- Holds the quotation marks for the language of the document.
-    -- Common to `configure` and `insert_quotation_marks`.
-    local MARKS = nil
+    -- Common to `configure` and `insert_quot_marks`.
+    local QUOT_MARKS = nil
 
     --- Determines the quotation marks for the document.
     --
-    -- Stores them in `MARKS`, which it shares with `insert_quotation_marks`.
+    -- Stores them in `QUOT_MARKS`, which it shares with `insert_quot_marks`.
     --
     -- @tparam pandoc.Meta The document's metadata.
     --
     -- Prints errors to STDERR.
     function configure (meta)
-        local lang = nil
-        if meta['quot-marks'] then
-            MARKS, err = get_marks_from_field(meta['quot-marks'])
-            if not MARKS then 
-                warn('metadata field "quoation-marks": ', err)
-                return
+        local err_map   = 'metadata field "quot-marks-by-lang": lang "%s": %s'
+        local err_marks = 'metadata field "quot-marks": %s'
+        local err_lang  = '%s: unknown language.'
+        local quot_marks, lang
+        if meta['quot-marks-by-lang'] then
+            for k, v in pairs(meta['quot-marks-by-lang']) do
+                local quot_marks, err = get_marks(v)
+                if not quot_marks then warn(err_map, k, err) return end
+                QUOT_MARKS_BY_LANG[k] = quot_marks
             end
+        end
+        if meta['quot-marks'] then
+            local err
+            quot_marks, err = get_marks(meta['quot-marks'])
+            if not quot_marks then warn(err_marks, err) return end
         elseif meta['quot-lang'] then
             lang = stringify(meta['quot-lang'])
         elseif meta['lang'] then
             lang = stringify(meta['lang'])
         end
         if lang then
-            MARKS, err = get_marks_by_language(lang)
-            if not MARKS then 
-                if not err then err = lang .. ': unknown language.' end
-                warn(err)
+            for i = 1, 3 do
+                if     i == 2 then lang = lang:match('^(%a+)')
+                elseif i == 3 then
+                    local expr = '^' .. lang .. '-'
+                    for k, v in pairs(QUOT_MARKS_BY_LANG) do
+                        if k:match(expr) then quot_marks = v break end
+                    end
+                end
+                if     i  < 3 then quot_marks = QUOT_MARKS_BY_LANG[lang] end
+                if quot_marks then break end
             end
         end
+        if quot_marks then QUOT_MARKS = map(Str, quot_marks) 
+        elseif lang then warn(err_lang, lang) end
     end
 
 
-    --- Replaces quoted elements with quoted text.
-    --
-    -- Uses the quotioatn marks stored in `MARKS`, 
-    -- which it shares with `configure`.
-    --
-    -- @tparam pandoc.Quoted quoted A quoted element.
-    -- @treturn {Str,pandoc.Inline,...,Str} A list with the opening quote 
-    --  (as `Str`), the content of `quoted`, and the closing quote (as `Str`).
-    function insert_quotation_marks (quoted)
-        if not MARKS then return end
-        local quote_type = quoted.c[1]
-        local inlines = quoted.c[2]
-        if quote_type == 'DoubleQuote' then
-            insert(inlines, 1, MARKS.ldquo)
-            insert(inlines, MARKS.rdquo)
-        elseif quote_type == 'SingleQuote' then
-            insert(inlines, 1, MARKS.lsquo)
-            insert(inlines, MARKS.rsquo)
-        else
-            warn(quote_type, ': unknown quote type.')
-            return
+    do
+        local insert = insert
+        --- Replaces quoted elements with quoted text.
+        --
+        -- Uses the quotation marks stored in `QUOT_MARKS`, 
+        -- which it shares with `configure`.
+        --
+        -- @tparam pandoc.Quoted quoted A quoted element.
+        -- @treturn {Str,pandoc.Inline,...,Str} A list with the opening quote 
+        --  (as `Str`), the content of `quoted`, and the closing quote (as `Str`).
+        function insert_quot_marks (quoted)
+            if not QUOT_MARKS then return end
+            local quote_type = quoted.c[1]
+            local inlines    = quoted.c[2]
+            local left, right
+            if     quote_type == 'DoubleQuote' then left, right = 1, 2
+            elseif quote_type == 'SingleQuote' then left, right = 3, 4
+            else   error('unknown quote type') end
+            insert(inlines, 1, QUOT_MARKS[left])
+            insert(inlines,    QUOT_MARKS[right])
+            return inlines
         end
-        return inlines
     end
 end
 
-return {{Meta = configure}, {Quoted = insert_quotation_marks}}
+return {{Meta = configure}, {Quoted = insert_quot_marks}}
