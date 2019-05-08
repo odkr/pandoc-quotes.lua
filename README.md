@@ -57,8 +57,10 @@ repository to wherever your operating system searches for manual pages.
 
 ## Test suite
 
-For the test suite to work, you need [Pandoc](https://www.pandoc.org/) 2.7.2.
-The test suite may or may not work with other versions of Pandoc.
+For the test suite to work, you need a POSIX-compliant operating system,
+[make](https://en.wikipedia.org/wiki/Make_(software)), and
+[Pandoc](https://www.pandoc.org/) 2.7.2. The test suite may or may not
+work with other versions of Pandoc.
 
 To run the test suite, just say:
 
