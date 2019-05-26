@@ -60,7 +60,7 @@ quot-marks: ""''
 If *quot-marks* is set, the other fields are ignored.
 
 
-# quot-lang
+## quot-lang
 
 An RFC 5646-like code for the language the quotation marks of
 which shall be used (e.g., "pt-BR", "es").
@@ -81,7 +81,7 @@ marks for "it" (i.e., Italian as spoken in general).
 If *quot-marks* is set, *quot-lang* is ignored.
 
 
-# lang
+## lang
 
 The format of *lang* is the same as for *quot-lang*. If *quot-marks*
 or *quot-lang* is set, *lang* is ignored. 
