@@ -8,7 +8,8 @@
 -- # DESCRIPTION
 -- 
 -- pandoc-quotes.lua is a filter for pandoc that replaces non-typographic
--- quotation marks with typographic ones for languages other than US English.
+-- quotation marks with typographic ones for languages other than American
+-- English.
 -- 
 -- You can define which typographic quotation marks to replace plain ones with
 -- by setting either a document's quot-marks, quot-lang, or lang
@@ -67,8 +68,8 @@
 -- 
 -- Note: Only the language and the country tags of RFC 5646 are supported.
 -- For example, "it-CH" (i.e., Italian as spoken in Switzerland) is fine, 
--- but "it-756" (also Italian as spoken in Switzerland) will return the quotation
--- marks for "it" (i.e., Italian as spoken in general).
+-- but "it-756" (also Italian as spoken in Switzerland) will return the 
+-- quotation marks for "it" (i.e., Italian as spoken in general).
 -- 
 -- If quot-marks is set, quot-lang is ignored.
 -- 
