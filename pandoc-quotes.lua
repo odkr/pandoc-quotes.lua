@@ -176,6 +176,8 @@ local concat = table.concat
 local insert = table.insert
 local unpack = table.unpack
 
+if not pandoc.utils then pandoc.utils = require 'pandoc.utils' end
+
 local stringify = pandoc.utils.stringify
 local Str = pandoc.Str
 
