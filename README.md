@@ -2,7 +2,7 @@
 
 `pandoc-quotes.lua` is a filter for [Pandoc](https://www.pandoc.org/) that
 replaces non-typographic quotation marks with typographic ones for languages
-other than US English.
+other than American English.
 
 You can define which typographic quotation marks to replace plain ones with by
 setting either a document's `quot-marks`, `quot-lang`, or `lang` metadata
