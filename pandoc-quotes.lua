@@ -158,7 +158,7 @@
 --
 --
 -- @script pandoc-quotes.lua
--- @release 0.1.8
+-- @release 0.1.10
 -- @author Odin Kroeger
 -- @copyright 2018 Odin Kroeger
 -- @license MIT
@@ -189,7 +189,7 @@ local text = require 'text'
 SCRIPT_NAME = 'pandoc-quotes.lua'
 
 --- The path seperator of the operating system.
-PATH_SEP = sub(package.config, 1, 1)
+PATH_SEP = package.config:sub(1, 1)
 
 --- The character sequence of the operating system to end a line.
 if PATH_SEP == '\\' then EOL = '\r\n'
@@ -275,7 +275,7 @@ QUOT_MARKS_BY_LANG = {
     pt          = {'«', '»', '“', '”'},
     ['pt-BR']   = {'“', '”', '‘', '’'},
     rm          = {'«', '»', '‹', '›'},
-    ro          = {'„', '”', '»', '«'},
+    ro          = {'„', '”', '«', '»'},
     ru          = {'«', '»', '“', '”'},
     sk          = {'„', '“', '‚', '‘'},
     sl          = {'„', '“', '‚', '‘'},
