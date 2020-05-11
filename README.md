@@ -22,7 +22,7 @@ You need [Pandoc](https://www.pandoc.org/) 2.0 or later.
 
 ### Installation
 
-1. Download the 
+1. Download the
    [latest release](https://github.com/odkr/pandoc-quotes.lua/releases/latest).
 2. Unpack it.
 3. Move `pandoc-quotes.lua` from the repository directory to the
@@ -31,7 +31,7 @@ You need [Pandoc](https://www.pandoc.org/) 2.0 or later.
 
 ### POSIX-compliant systems
 
-If you have [curl](https://curl.haxx.se/) or 
+If you have [curl](https://curl.haxx.se/) or
 [wget](https://www.gnu.org/software/wget/), you can (probably)
 install `pandoc-quotes.lua` by copy-pasting the
 following commands into a bourne shell:
@@ -39,7 +39,7 @@ following commands into a bourne shell:
 ```sh
 (
     set -Cefu
-    NAME=pandoc-quotes.lua VERS=0.1.10
+    NAME=pandoc-quotes.lua VERS=0.1.11
     URL="https://github.com/odkr/${NAME:?}/archive/v${VERS:?}.tar.gz"
     FILTERS="${HOME:?}/.pandoc/filters"
     mkdir -p "${FILTERS:?}"
@@ -76,7 +76,7 @@ and the source for details.
 
 ## Contact
 
-If there's something wrong with `pandoc-quotes.lua`, 
+If there's something wrong with `pandoc-quotes.lua`,
 [open an issue](https://github.com/odkr/pandoc-quotes.lua/issues).
 
 
