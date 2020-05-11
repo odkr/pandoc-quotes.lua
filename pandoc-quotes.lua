@@ -370,7 +370,7 @@ do
     function get_quotation_marks (meta)
         if meta.t == 'MetaInlines' then
             local marks = stringify(meta)
-            if text.len(mark) ~= 4 then
+            if text.len(marks) ~= 4 then
                 return nil, 'not four quotation marks'
             end
             local ret = {}
