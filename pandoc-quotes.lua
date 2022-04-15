@@ -458,7 +458,7 @@ do
         function insert_quot_marks (quoted)
             if not QUOT_MARKS then return end
             local quote_type = quoted.quotetype
-            local inlines = quoted.content
+            local inlines    = quoted.content
             local left, right
             if     quote_type == 'DoubleQuote' then left, right = 1, 2
             elseif quote_type == 'SingleQuote' then left, right = 3, 4
