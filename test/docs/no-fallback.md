@@ -1,11 +1,11 @@
 ---
-quot-marks-by-lang:
+quotation-marks-by-lang:
     xxx-zz:
         - LDQUO
         - RDQUO
         - LSQUO
         - RSQUO
-quot-lang: xxx-yy
+quotation-lang: xxx-yy
 ...
 
 This is a "not so simple" test.

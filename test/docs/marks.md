@@ -1,5 +1,5 @@
 ---
-quot-marks: „“‚‘
+quotation-marks: „“‚‘
 ...
 
 This is a "test".

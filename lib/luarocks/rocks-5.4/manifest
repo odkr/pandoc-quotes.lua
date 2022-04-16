@@ -1,0 +1,43 @@
+commands = {}
+dependencies = {
+   pancake = {
+      ["1.0.0b17-0"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 3, string = "5.3"
+                  }
+               },
+               {
+                  op = "<",
+                  version = {
+                     6, string = "6"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   }
+}
+modules = {
+   pancake = {
+      "pancake/1.0.0b17-0"
+   }
+}
+repository = {
+   pancake = {
+      ["1.0.0b17-0"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               pancake = "pancake.lua"
+            }
+         }
+      }
+   }
+}

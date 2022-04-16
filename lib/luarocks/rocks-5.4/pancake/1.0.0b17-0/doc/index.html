@@ -1,0 +1,2677 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Pancake</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Metadata">Metadata </a></li>
+<li><a href="#System">System </a></li>
+<li><a href="#Type_checking">Type-checking </a></li>
+<li><a href="#Errors">Errors </a></li>
+<li><a href="#Tables">Tables </a></li>
+<li><a href="#Strings">Strings </a></li>
+<li><a href="#Variables">Variables </a></li>
+<li><a href="#Metatables">Metatables </a></li>
+<li><a href="#Prototypes">Prototypes </a></li>
+<li><a href="#File_I_O">File I/O </a></li>
+<li><a href="#Paths">Paths </a></li>
+<li><a href="#Warnings">Warnings </a></li>
+<li><a href="#Elements">Elements </a></li>
+<li><a href="#Options">Options </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>pancake</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>pancake</code></h1>
+<p>Toolkit for writing <a href="https://pandoc.org/lua-filters.html">Lua filters</a>
+ for <a href="https://pandoc.org">Pandoc</a>.</p>
+<p><h2> Synopsis:</h2>
+
+<pre>
+pancake = <span class="global">require</span> <span class="string">'pancake'</span>
+</pre>
+
+
+<p> Pancake aims to work with Pandoc ≥ v2.0.4.
+ However, it has only been tested with v2.9–v2.18, and only on Linux and macOS.</p>
+
+<h2> Tip:</h2>
+
+<p> Pancake automatically loads Pandoc&rsquo;s modules (e.g., <code>pandoc.system</code>) into
+ the global namespace; this is useful when you are using older versions of
+ Pandoc, which do not do this automatically. So, you may want to load it
+ <em>before</em> setting up a per-function or per-module environment.</p></p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2022 Odin Kroeger</li>
+        <li><strong>Release</strong>: 1.0.0b17</li>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Odin Kroeger</li>
+    </ul>
+
+
+<h2><a href="#Metadata">Metadata </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#VERSION">VERSION</a></td>
+	<td class="summary"><em>Pancake</em>&rsquo;s version.</td>
+	</tr>
+</table>
+<h2><a href="#System">System </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#PATH_SEP">PATH_SEP</a></td>
+	<td class="summary">The path segment separator used by the operating system.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EOL">EOL</a></td>
+	<td class="summary">The end of line sequence typically used on the given operating system.</td>
+	</tr>
+</table>
+<h2><a href="#Type_checking">Type-checking </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#type_match">type_match (val, decl)</a></td>
+	<td class="summary">Check whether a value is of a type.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#type_check">type_check (...)</a></td>
+	<td class="summary">Decorator that adds type checks to a function.</td>
+	</tr>
+</table>
+<h2><a href="#Errors">Errors </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#asserter">asserter ([fin[, msgh]])</a></td>
+	<td class="summary">Create a custom assertion function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#protect">protect (func)</a></td>
+	<td class="summary">Decorator that runs a function in protected mode.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#unprotect">unprotect (func)</a></td>
+	<td class="summary">Decorator that raises an error if a function returns a fail value.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#copy">copy (val)</a></td>
+	<td class="summary">Make a deep copy of a value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#keys">keys (tab)</a></td>
+	<td class="summary">Get the indices and number of items in a table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#order">order (values)</a></td>
+	<td class="summary">Derive a sorting function from a list of values.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#sorted">sorted (tab[, func[, raw]])</a></td>
+	<td class="summary">Iterate over the key-value pairs of a table in a given order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tabulate">tabulate (iter[, tab[, idx]])</a></td>
+	<td class="summary">Tabulate the values that an iterator returns.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#walk">walk (val, func)</a></td>
+	<td class="summary">Apply a function to each node of a tree.</td>
+	</tr>
+</table>
+<h2><a href="#Strings">Strings </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#split">split (str, pat[, max[, incl[, plain=false]]])</a></td>
+	<td class="summary">Iterate over substrings of a string.</td>
+	</tr>
+</table>
+<h2><a href="#Variables">Variables </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#vars_get">vars_get ([level=2])</a></td>
+	<td class="summary">Get a copy of a function&rsquo;s variables.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#vars_sub">vars_sub (str, vars)</a></td>
+	<td class="summary">Substitute variables in strings.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#env_sub">env_sub (str)</a></td>
+	<td class="summary">Substitute environment variables in strings.</td>
+	</tr>
+</table>
+<h2><a href="#Metatables">Metatables </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#no_case">no_case</a></td>
+	<td class="summary">Metatable that makes indices case-insensitive.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#no_case.__index">no_case.__index (tab, key)</a></td>
+	<td class="summary">Look up an item.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#no_case.__newindex">no_case.__newindex (tab, key, val)</a></td>
+	<td class="summary">Store a new item.</td>
+	</tr>
+</table>
+<h2><a href="#Prototypes">Prototypes </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Object">Object</a></td>
+	<td class="summary">Base prototype.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Object:clone">Object:clone ([tab[, mt]])</a></td>
+	<td class="summary">Delegate to an object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Object:new">Object:new (...)</a></td>
+	<td class="summary">Initialise an Object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getterify">getterify (tab)</a></td>
+	<td class="summary">Add getters to a table.</td>
+	</tr>
+</table>
+<h2><a href="#File_I_O">File I/O </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#file_exists">file_exists (fname)</a></td>
+	<td class="summary">Check whether a file exists.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#file_locate">file_locate (fname)</a></td>
+	<td class="summary">Locate a file in Pandoc&rsquo;s resource path.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#file_read">file_read (fname)</a></td>
+	<td class="summary">Read a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#file_write">file_write (fname, ...)</a></td>
+	<td class="summary">Write data to a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tmp_fname">tmp_fname ([dir[, templ='tmp-XXXXXX']])</a></td>
+	<td class="summary">Generate a name for a temporary file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#with_tmp_file">with_tmp_file (func[, dir[, templ]])</a></td>
+	<td class="summary">Run a function with a temporary file.</td>
+	</tr>
+</table>
+<h2><a href="#Paths">Paths </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#path_join">path_join (...)</a></td>
+	<td class="summary">Join path segments.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#path_normalise">path_normalise (path)</a></td>
+	<td class="summary">Normalise a path.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#path_prettify">path_prettify (path)</a></td>
+	<td class="summary">Prettify a path.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#path_split">path_split (path)</a></td>
+	<td class="summary">Split a path into a directory and a filename.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#project_dir">project_dir ()</a></td>
+	<td class="summary">Guess the project directory.</td>
+	</tr>
+</table>
+<h2><a href="#Warnings">Warnings </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#xwarn">xwarn (...)</a></td>
+	<td class="summary">Print a message to STDERR.</td>
+	</tr>
+</table>
+<h2><a href="#Elements">Elements </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#elem_clone">elem_clone (elem)</a></td>
+	<td class="summary">Make a shallow copy of a Pandoc AST element.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#elem_type">elem_type (elem)</a></td>
+	<td class="summary">Get the type of a Pandoc AST element.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#elem_walk">elem_walk (elem, filter)</a></td>
+	<td class="summary">Walk an AST element and apply a filter to matching elements.</td>
+	</tr>
+</table>
+<h2><a href="#Options">Options </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Options">Options</a></td>
+	<td class="summary">An option list.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Options:new">Options:new (...)</a></td>
+	<td class="summary">Create a new option list.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Options:add">Options:add (...)</a></td>
+	<td class="summary">Add an option to the list.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Options:parse">Options:parse (meta)</a></td>
+	<td class="summary">Parse options from a metadata block (OO-interface).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#opts_parse">opts_parse (meta, ...)</a></td>
+	<td class="summary">Parse options from a metadata block (function interface).</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Metadata"></a>Metadata </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "VERSION"></a>
+    <strong>VERSION</strong>
+    </dt>
+    <dd>
+    <em>Pancake</em>&rsquo;s version.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="System"></a>System </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "PATH_SEP"></a>
+    <strong>PATH_SEP</strong>
+    </dt>
+    <dd>
+    The path segment separator used by the operating system.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EOL"></a>
+    <strong>EOL</strong>
+    </dt>
+    <dd>
+    The end of line sequence typically used on the given operating system.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Type_checking"></a>Type-checking </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "type_match"></a>
+    <strong>type_match (val, decl)</strong>
+    </dt>
+    <dd>
+    Check whether a value is of a type.</p>
+
+<p> <h3>Type Declaration Grammar:</h3></p>
+
+<p> Give one or more Lua type names separated by a pipe symbol (&lsquo;|&rsquo;)
+ to check whether a value is of one of the given types (e.g.,
+ &lsquo;string|table&rsquo; checks whether the value is a string or a table).
+ &lsquo;<em>&rsquo; is short for the list of all types save for <code>nil</code>. &lsquo;?</em>T<em>&rsquo; is
+ short for &lsquo;</em>T*|nil&rsquo; (e.g., &lsquo;?table&rsquo; is short for &lsquo;table|nil&rsquo;).</p>
+
+<p> In <a href="https://en.wikipedia.org/wiki/EBNF">Extended Backus-Naur Form</a>:</p>
+
+<blockquote><p>Type = &lsquo;boolean&rsquo; | &lsquo;function&rsquo; | &lsquo;nil&rsquo;    | &lsquo;number&rsquo;   |
+          &lsquo;string&rsquo;  | &lsquo;table&rsquo;    | &lsquo;thread&rsquo; | &lsquo;userdata&rsquo;</p>
+
+<p>Type list = [ &lsquo;?&rsquo; ], type, { &lsquo;|&rsquo;, type }</p>
+
+<p>Wildcard = [ &lsquo;?&rsquo; ], &lsquo;*&rsquo;</p>
+
+<p>Type declaration = type list | wildcard</p></blockquote>
+
+<p> <h3>Complex Types:</h3></p>
+
+<p> You can check types of table or userdata fields by
+ declarding a table that maps indices to declarations.</p>
+
+<pre><code>  &gt; type_check({1, '2'}, {'number', 'number'})
+  nil    index 2: expected number, got string.
+  &gt; type_check({foo = 'bar'}, {foo = '?table'})
+  nil    index foo: expected table or nil, got string.
+  &gt; type_check('foo', {foo = '?table'})
+  nil    expected table or userdata, got string.
+</code></pre>
+
+<p> <h3>Caveats:</h3></p>
+
+<p> Wrong type names (e.g., &lsquo;int&rsquo;) do <em>not</em> throw an error,
+ but will always return one.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">val</span>
+         A value.
+        </li>
+        <li><span class="parameter">decl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         A type declaration.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        <code>true</code> if the value matches the declaration.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> otherwise.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "type_check"></a>
+    <strong>type_check (...)</strong>
+    </dt>
+    <dd>
+    Decorator that adds type checks to a function.</p>
+
+<p> Only adds type checks if the global <code>CHECK_TYPES</code> evaluates as true.</p>
+
+<p> <h3>Type declaration grammar:</h3></p>
+
+<p> The type declaration syntax is that of <a href="index.html#type_match">type_match</a>, save for
+ that you can use &lsquo;&hellip;&rsquo; to declare that the remaining arguments
+ are of the same type as the previous one.
+
+    <h3>Caveats:</h3>
+    <ul>
+         <ul>
+<li>Wrong type names (e.g., &lsquo;int&rsquo;) do <em>not</em> throw an error.</li>
+<li>Sometimes the strack trace is wrong.</li>
+</ul>
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    <h3>Tip:</h3>
+    <ul>
+          Obscure Lua errors may indicate that
+  the quotes around &lsquo;&hellip;&rsquo; are missing.
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+         One type declaration per argument.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A function that adds type checks to another function.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">store = type_check(<span class="string">'*'</span>, <span class="string">'table'</span>, <span class="string">'?number'</span>, <span class="string">'...'</span>)(
+    <span class="keyword">function</span> (val, tab, ...)
+         <span class="keyword">local</span> indices = <span class="global">table</span>.pack(...)
+         <span class="keyword">for</span> i = <span class="number">1</span>, indices.n <span class="keyword">do</span> tab[indices[i]] = val <span class="keyword">end</span>
+    <span class="keyword">end</span>
+)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Errors"></a>Errors </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "asserter"></a>
+    <strong>asserter ([fin[, msgh]])</strong>
+    </dt>
+    <dd>
+    Create a custom assertion function.</p>
+
+<p> See <a href="http://lua-users.org/wiki/FinalizedExceptions">http://lua-users.org/wiki/FinalizedExceptions</a>.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fin</span>
+            <span class="types"><span class="type">func</span></span>
+         Called before an error is thrown.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">msgh</span>
+            <span class="types"><span class="type">func</span></span>
+         Given the error and the caller&rsquo;s variables,
+  should return a new error.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        An assertion function.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; <span class="keyword">local</span> <span class="global">assert</span> = asserter(<span class="keyword">nil</span>, vars_sub)
+&gt; <span class="keyword">function</span> foo ()
+&gt;    <span class="keyword">local</span> bar = <span class="string">'The bar'</span>
+&gt;    <span class="global">assert</span>(<span class="keyword">false</span>, <span class="string">'${bar} is to blame!'</span>)
+&gt; <span class="keyword">end</span>
+&gt; foo()
+The bar is to blame!
+stack traceback:
+        [C]: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">'error'</span>
+        stdin:<span class="number">3</span>: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">'foo'</span>
+        (...tail calls...)
+        [C]: <span class="keyword">in</span> ?</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "protect"></a>
+    <strong>protect (func)</strong>
+    </dt>
+    <dd>
+    Decorator that runs a function in protected mode.</p>
+
+<p> See <a href="http://lua-users.org/wiki/FinalizedExceptions">http://lua-users.org/wiki/FinalizedExceptions</a>.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">func</span></span>
+         A function.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A function running in protected mode.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#unprotect">unprotect</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; foo = protect(<span class="keyword">function</span> () <span class="keyword">return</span> <span class="string">'foo'</span> <span class="keyword">end</span>)
+&gt; foo()
+foo
+&gt; boo = protect(<span class="keyword">function</span> () <span class="global">error</span> <span class="string">'bar!'</span> <span class="keyword">end</span>)
+&gt; boo()
+<span class="keyword">nil</span>    bar!</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "unprotect"></a>
+    <strong>unprotect (func)</strong>
+    </dt>
+    <dd>
+    Decorator that raises an error if a function returns a fail value.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">func</span></span>
+         A function.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A function that throws an error on failures.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#protect">protect</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; foo = unprotect(<span class="keyword">function</span> () <span class="keyword">return</span> <span class="string">'foo'</span> <span class="keyword">end</span>)
+&gt; foo()
+foo
+&gt; boo = unprotect(<span class="keyword">function</span> () <span class="keyword">return</span> <span class="keyword">nil</span>, <span class="string">'boo.'</span> <span class="keyword">end</span>)
+&gt; boo()
+boo.
+stack traceback:
+        [C]: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">'error'</span>
+        stdin:<span class="number">4</span>: <span class="keyword">in</span> <span class="keyword">function</span> <span class="string">'boo'</span>
+        (...tail calls...)
+        [C]: <span class="keyword">in</span> ?</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "copy"></a>
+    <strong>copy (val)</strong>
+    </dt>
+    <dd>
+    <p>Make a deep copy of a value.</p>
+
+<ul>
+<li>Copies metatables.</li>
+<li>Handles cyclic data.</li>
+<li>Bypasses <code>__pairs</code> and <code>__newindex</code>.</li>
+</ul>
+
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">val</span>
+         A value.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A deep copy.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; foo = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
+&gt; bar = {foo, <span class="number">4</span>}
+&gt; baz = copy(bar)
+&gt; foo[#foo + <span class="number">1</span>] = <span class="number">4</span>
+&gt; <span class="global">table</span>.<span class="global">unpack</span>(baz, <span class="number">1</span>)
+<span class="number">1</span>    <span class="number">2</span>    <span class="number">3</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "keys"></a>
+    <strong>keys (tab)</strong>
+    </dt>
+    <dd>
+    Get the indices and number of items in a table.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    <h3>Tip:</h3>
+    <ul>
+          <code>select(2, keys(t)) == #t</code> checks whether a table is a list.
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">tab</span></span>
+        The indices.</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        The number of items.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "order"></a>
+    <strong>order (values)</strong>
+    </dt>
+    <dd>
+    Derive a sorting function from a list of values.</p>
+
+<p> Values that are not in the list are sorted lexically.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">values</span>
+            <span class="types"><span class="type">tab</span></span>
+         Values.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A sorting function.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; tab = {a = <span class="number">3</span>, b = <span class="number">4</span>, c = <span class="number">2</span>, d = <span class="number">1</span>}
+&gt; <span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(tab, order{<span class="string">'d'</span>, <span class="string">'c'</span>}) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(k, v)
+&gt; <span class="keyword">end</span>
+d    <span class="number">1</span>
+c    <span class="number">2</span>
+a    <span class="number">3</span>
+b    <span class="number">4</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "sorted"></a>
+    <strong>sorted (tab[, func[, raw]])</strong>
+    </dt>
+    <dd>
+    Iterate over the key-value pairs of a table in a given order.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+        </li>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">func</span></span>
+         A sorting function.
+  Defaults to the <code>sort</code> metamethod or sorting lexically.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">raw</span>
+            <span class="types"><span class="type">bool</span></span>
+         Bypass <code>__pairs</code> metamethod?
+  Done by default if <code>__pairs</code> is set to <code>sorted</code>.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A <em>stateful</em> iterator.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; <span class="comment">-- Iterating over keys in lexical order.
+</span>&gt; tab = {c = <span class="number">3</span>, b = <span class="number">2</span>, a = <span class="number">1</span>}
+&gt; <span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(tab) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(k, v)
+&gt; <span class="keyword">end</span>
+a    <span class="number">1</span>
+b    <span class="number">2</span>
+c    <span class="number">3</span>
+<span class="comment">-- Supplying a sorting function.
+</span>&gt; <span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(tab, order{<span class="string">'c'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>}) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(k, v)
+&gt; <span class="keyword">end</span>
+c    <span class="number">3</span>
+b    <span class="number">2</span>
+a    <span class="number">1</span>
+&gt; <span class="comment">-- Setting the `sort` metamethod.
+</span>&gt; mt = {sort = order{<span class="string">'c'</span>, <span class="string">'b'</span>, <span class="string">'a'</span>}}
+&gt; <span class="global">setmetatable</span>(tab, mt)
+&gt; <span class="keyword">for</span> k, v <span class="keyword">in</span> sorted(tab) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(k, v)
+&gt; <span class="keyword">end</span>
+c    <span class="number">3</span>
+b    <span class="number">2</span>
+a    <span class="number">1</span>
+&gt; <span class="comment">-- Using `sorted` as `__pairs` metamethod.
+</span>&gt; mt.__pairs = sorted
+&gt; <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="global">pairs</span>(tab) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(k, v)
+&gt; <span class="keyword">end</span>
+c    <span class="number">3</span>
+b    <span class="number">2</span>
+a    <span class="number">1</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "tabulate"></a>
+    <strong>tabulate (iter[, tab[, idx]])</strong>
+    </dt>
+    <dd>
+    Tabulate the values that an iterator returns.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">iter</span>
+            <span class="types"><span class="type">func</span></span>
+         An iterator. Must accept, though not honour,
+  the same arguments as <a href="https://www.lua.org/manual/5.1/manual.html#pdf-next">next</a>.
+        </li>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table to iterate over.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">idx</span>
+         An index to start at.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">tab</span></span>
+        The values returned by the iterator.</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        The number of values.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; tab = {a = <span class="keyword">true</span>, b = <span class="keyword">true</span>, c = <span class="keyword">true</span>}
+&gt; <span class="global">unpack</span>(tabulate(<span class="global">next</span>, tab))
+a    b    c</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "walk"></a>
+    <strong>walk (val, func)</strong>
+    </dt>
+    <dd>
+    <p>Apply a function to each node of a tree.</p>
+
+<ul>
+<li>Nodes are only changed if the function returns a non-<code>nil</code> value.</li>
+<li>The tree is walked bottom-up.</li>
+<li>Handles cyclic data structures.</li>
+</ul>
+
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">val</span>
+         A value.
+        </li>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">func</span></span>
+         A function.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A changed value.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Strings"></a>Strings </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "split"></a>
+    <strong>split (str, pat[, max[, incl[, plain=false]]])</strong>
+    </dt>
+    <dd>
+    Iterate over substrings of a string.
+
+    <h3>Caveats:</h3>
+    <ul>
+         Does not support multi-byte characters.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A string.
+        </li>
+        <li><span class="parameter">pat</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Where to split the string.
+        </li>
+        <li><span class="parameter">max</span>
+            <span class="types"><span class="type">int</span></span>
+         Split the string into at most that many substrings.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">incl</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Include separators in substrings?
+  &lsquo;l&rsquo; includes them on the left,
+  &lsquo;r&rsquo; on the right.
+  If they are included, the iterator never returns the empty string.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">plain</span>
+            <span class="types"><span class="type">bool</span></span>
+         Disable pattern matching facilities?
+         (<em>default</em> false)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">func</span></span>
+        A <em>stateful</em> iterator.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; <span class="keyword">for</span> s <span class="keyword">in</span> split(<span class="string">'CamelCase'</span>, <span class="string">'%f[%u]'</span>) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(s)
+&gt; <span class="keyword">end</span>
+
+Camel
+Case
+&gt; <span class="keyword">for</span> s <span class="keyword">in</span> split(<span class="string">'foobar'</span>, <span class="string">'[fb]'</span>, <span class="keyword">nil</span>, <span class="string">'l'</span>) <span class="keyword">do</span>
+&gt;     <span class="global">print</span>(s)
+&gt; <span class="keyword">end</span>
+foo
+bar</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Variables"></a>Variables </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "vars_get"></a>
+    <strong>vars_get ([level=2])</strong>
+    </dt>
+    <dd>
+    Get a copy of a function&rsquo;s variables.
+
+    <h3>Caveats:</h3>
+    <ul>
+          If a global variable is shadowed by a variable that is neither one of
+ the function&rsquo;s local variables nor one of its upvalues, then that variable
+ is looked up in <code>_ENV</code> and the shadowing variable is ignored.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">level</span>
+            <span class="types"><span class="type">int</span></span>
+         A stack level > 0, where
+  <code>vars_get</code> is at level 1,
+  its caller is at level 2,
+  etc.
+         (<em>default</em> 2)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a></span>
+        A mapping of variable names to values.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; <span class="keyword">function</span> bar ()
+&gt;     <span class="global">print</span>(vars_get(<span class="number">3</span>).foo)
+&gt; <span class="keyword">end</span>
+&gt; <span class="keyword">function</span> foo ()
+&gt;     foo = <span class="string">'foo'</span>
+&gt;     bar()
+&gt; <span class="keyword">end</span>
+&gt; foo()
+foo</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "vars_sub"></a>
+    <strong>vars_sub (str, vars)</strong>
+    </dt>
+    <dd>
+    <p>Substitute variables in strings.</p>
+
+<p> If a string of characters is placed within braces (&lsquo;{&hellip;}&rsquo;) and the
+ opening brace (&lsquo;{&rsquo;) immediately follows a single dollar (&lsquo;$&rsquo;) sign,
+ then that string is interpreted as a variable name and the whole
+ expression is replaced with the value of that variable. Variable names
+ must only consist of letters, numbers, and underscores (&lsquo;_&rsquo;) and
+ must start with a letter or an underscore.</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '${v1} is ${v2}.',
+&gt;     {v1 = 'foo', v2 = 'bar'}
+&gt; )
+foo is bar.
+</code></pre>
+
+<p> If a braced string is preceded by two or more dollar signs, it is <em>not</em>
+ interpreted as a variable name and the expression is <em>not</em> replaced
+ with the value of a variable. Moreover, any series of <em>n</em> dollar signs
+ that precedes a pair of braces (e.g., <code>$${...}</code>) is replaced with
+ <em>n</em> – 1 dollar signs.</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '$${var} costs $1.',
+&gt;     {var = 'foo'}
+&gt; )
+${var} costs $1.
+</code></pre>
+
+<p> You can lookup values in tables by joining table
+ indices with dots (&lsquo;.&rsquo;).</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '${foo.bar} is baz.', {
+&gt;         foo = { bar = 'baz' }
+&gt;     }
+&gt; )
+baz is baz.
+</code></pre>
+
+<p> If a variable name is followed by a pipe symbol (&lsquo;|&rsquo;), then the string
+ between that pipe symbol and the next pipe symbol/closing brace is
+ interpreted as a function name, this function is then given the value
+ of that variable, and the whole expression is replaced with the
+ first value the function returns.</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '${var|barify} is bar!', {
+&gt;         var = 'foo',
+&gt;         barify = function (s)
+&gt;             return s:gsub('foo', 'bar')
+&gt;         end
+&gt;     }
+&gt; )
+bar is bar!
+</code></pre>
+
+<p> Variables are substituted recursively.</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '${foo|barify} is bar.', {
+&gt;         foo = '${bar}',
+&gt;         bar = 'baz',
+&gt;         barify = function (s) return s:gsub('baz', 'bar') end
+&gt;     }
+&gt; )
+bar is bar.
+</code></pre>
+
+<p> The expression as a whole must evaluate either to a string or a number.</p>
+
+<p> Variables can also be looked up by a function. The function is run
+ in protected mode. If it throws an error, <code>vars_sub</code> will return
+ <code>nil</code> and the error object thrown by the function. Note, this mode
+ does <em>not</em> support multi-dimensional lookups (<code>${foo.bar}</code>),
+ pipes (<code>${foo|bar}</code>), or recursive substitution.</p>
+
+<pre><code>&gt; vars_sub(
+&gt;     '${foo} is bar.',
+&gt;     function (key)
+&gt;         if key == 'foo' then return 'bar' end
+&gt;     end
+&gt; )
+bar is bar.
+</code></pre>
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A string.
+        </li>
+        <li><span class="parameter">vars</span>
+            <span class="types"><span class="type">func</span> or <span class="type">tab</span></span>
+         A mapping of variable names to values.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A transformed string.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if an error occurred.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "env_sub"></a>
+    <strong>env_sub (str)</strong>
+    </dt>
+    <dd>
+    Substitute environment variables in strings.</p>
+
+<p> Uses the same syntax as <a href="index.html#vars_sub">vars_sub</a>, but without
+ pipes or recursive substitution.
+
+    </ul>
+    </ul>
+    </ul>
+    <h3>Side-effects:</h3>
+    <ul>
+         Prints a warning to STDERR if a variable is empty.
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A string.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A transformed string.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if an error occurred.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metatables"></a>Metatables </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "no_case"></a>
+    <strong>no_case</strong>
+    </dt>
+    <dd>
+    Metatable that makes indices case-insensitive.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; tab = <span class="global">setmetatable</span>({}, no_case)
+&gt; tab.FOO = <span class="string">'bar'</span>
+&gt; tab.foo
+bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "no_case.__index"></a>
+    <strong>no_case.__index (tab, key)</strong>
+    </dt>
+    <dd>
+    Look up an item.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+        </li>
+        <li><span class="parameter">key</span>
+         A key.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The item.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "no_case.__newindex"></a>
+    <strong>no_case.__newindex (tab, key, val)</strong>
+    </dt>
+    <dd>
+    Store a new item.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+        </li>
+        <li><span class="parameter">key</span>
+         A key.
+        </li>
+        <li><span class="parameter">val</span>
+         A value.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Prototypes"></a>Prototypes </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Object"></a>
+    <strong>Object</strong>
+    </dt>
+    <dd>
+    Base prototype.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    <h3>Tip:</h3>
+    <ul>
+         <code>Object(...)</code> is equivalent to <code>Object:new(...)</code>.
+    </ul>
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Object:clone"></a>
+    <strong>Object:clone ([tab[, mt]])</strong>
+    </dt>
+    <dd>
+    <p>Delegate to an object.</p>
+
+<p> Set a table&rsquo;s metatable to a copy of the objects&rsquo;s metatable, then set the
+ table&rsquo;s <code>__index</code> metavalue to the object. If no table is given, create
+ one. If a metatable is given, override the table&rsquo;s new metatable with
+ that table. In other words,</p>
+
+<pre><code> Object:clone(tab, mt)
+</code></pre>
+
+<p> is equivalent to</p>
+
+<pre><code> do
+     local mt = update({}, getmetatable(Object), {__index = Object}, mt)
+     setmetatable(tab or {}, mt)
+ end
+</code></pre>
+
+    <h3>Caveats:</h3>
+    <ul>
+         The given table is changed <em>in-place</em>.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">mt</span>
+            <span class="types"><span class="type">tab</span></span>
+         A metatable.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">tab</span></span>
+        The table.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; Foo = Object:clone({}, {__tostring = <span class="keyword">function</span> (t) <span class="keyword">return</span> t.bar <span class="keyword">end</span>})
+&gt; Foo.bar = <span class="string">'baz'</span>
+&gt; <span class="global">tostring</span>(Foo)
+baz
+&gt; bar = Foo()
+&gt; <span class="global">tostring</span>(bar)
+baz
+&gt; bar.bar = <span class="string">'bar'</span>
+&gt; <span class="global">tostring</span>(bar)
+bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Object:new"></a>
+    <strong>Object:new (...)</strong>
+    </dt>
+    <dd>
+    Initialise an Object.</p>
+
+<p> <code>Object:new(...)</code> is equivalent to <code>update(Object:clone(), ...)</code>.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">tab</span></span>
+         Properties.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#Object">Object</a></span>
+        An object.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; foo = Object:new{foo = <span class="string">'foo'</span>}
+&gt; foo.foo
+foo
+&gt; bar = foo:new{bar = <span class="string">'bar'</span>}
+&gt; bar.foo
+foo
+&gt; bar.bar
+bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "getterify"></a>
+    <strong>getterify (tab)</strong>
+    </dt>
+    <dd>
+    Add getters to a table.</p>
+
+<p> <h3>Getter protocol:</h3></p>
+
+<p> If an index is not present in a the table, look for a function of the same
+ name in the table&rsquo;s <code>getters</code> metavalue, which must be a table that maps
+ indices to functions. If <code>getters</code> contains a function of the give name,
+ that function is called with the table as its only argument and whatever it
+ returns is returned as the value of the given index. If <code>getters</code> does
+ not contain a function of that name, the name is looked up using the
+ table&rsquo;s <em>old</em> <code>__index</code> metavalue.
+
+    <h3>Caveats:</h3>
+    <ul>
+         <ul>
+<li>Tables are modified <em>in-place</em>.</li>
+<li>Getters are <em>not</em> inherited.</li>
+</ul>
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+            <span class="types"><span class="type">tab</span></span>
+         A table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">tab</span></span>
+        The table.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; <span class="comment">-- Enable getters for an object:
+</span>&gt; Foo = getterify(Object:clone())
+&gt; Foo.foo = <span class="string">'bar'</span>
+&gt; mt = <span class="global">getmetatable</span>(Foo)
+&gt; mt.getters = {bar = <span class="keyword">function</span> (obj) <span class="keyword">return</span> obj.foo <span class="keyword">end</span>}
+&gt; Foo.bar
+bar
+&gt; <span class="comment">-- Getters are *not* inherited.
+</span>&gt; baz = Foo()
+&gt; baz.foo = <span class="string">'bam!'</span>
+&gt; <span class="comment">-- The getter is reached via the prototype chain,
+</span>&gt; <span class="comment">-- so it sees Foo.foo, not bar.foo:
+</span>&gt; baz.bar
+bar
+&gt; <span class="comment">-- But you can make getters quasi-inheritable:
+</span>&gt; Foo.clone = <span class="keyword">function</span> (...) <span class="keyword">return</span> getterify(Object.clone(...)) <span class="keyword">end</span>
+&gt; baz = Foo()
+&gt; baz.foo = <span class="string">'bam!'</span>
+&gt; baz.bar
+bam!
+&gt; <span class="comment">-- Now every object down the prototype chain is getterified.
+</span>&gt; bam = baz()
+&gt; bam.foo = <span class="string">'BAM!'</span>
+&gt; bam.bar
+BAM!</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="File_I_O"></a>File I/O </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "file_exists"></a>
+    <strong>file_exists (fname)</strong>
+    </dt>
+    <dd>
+    Check whether a file exists.
+
+    <h3>Caveats:</h3>
+    <ul>
+          Another process may create a file of the given name between the time
+ <code>file_exists</code> tries to access that file and the time it returns.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A filename.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if the file exists.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if the file does not exist.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        The error number 2.</li>
+    </ol>
+
+    <h3>Raises:</h3>
+    An error if the file cannot be closed again.
+
+
+
+</dd>
+    <dt>
+    <a name = "file_locate"></a>
+    <strong>file_locate (fname)</strong>
+    </dt>
+    <dd>
+    Locate a file in Pandoc&rsquo;s resource path.
+
+    <h3>Caveats:</h3>
+    <ul>
+         Absolute filenames are returned as they are.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A filename.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A filename in Pandoc&rsquo;s resource path.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if the file could not be found.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "file_read"></a>
+    <strong>file_read (fname)</strong>
+    </dt>
+    <dd>
+    Read a file.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A filename.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        The contents of the file.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if an error occurred.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        An error number.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "file_write"></a>
+    <strong>file_write (fname, ...)</strong>
+    </dt>
+    <dd>
+    Write data to a file.</p>
+
+<p> If a file of that name exists already, it is overwritten.
+
+    <h3>Caveats:</h3>
+    <ul>
+          Data is first written to a temporary file, that file is then renamed
+ to the given filename. This is safe and secure starting with Pandoc
+ v2.8. If you are using an older version of Pandoc, the caveats of
+ <a href="index.html#with_tmp_file">with_tmp_file</a> apply.</p>
+
+<p> Moreover, if Pandoc exits because it catches a signal (e.g., because
+ the user presses <code>Ctrl</code>-<code>c</code>), this file will <em>not</em> be deleted. This
+ is a <a href="https://github.com/jgm/pandoc/issues/7355">bug</a> in Pandoc.
+    </ul>
+    </ul>
+    </ul>
+    <h3>Side-effects:</h3>
+    <ul>
+         <ul>
+<li>Creates and deletes a temporary file.</li>
+<li>Prints warnings to STDERR.</li>
+</ul>
+
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A filename.
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         The data.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        <code>true</code> if the data was written to the given file.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if an error occurred.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+        <li>
+           <span class="types"><span class="type">int</span></span>
+        An error number.</li>
+    </ol>
+
+    <h3>Raises:</h3>
+     An error if no unused temporary filename could be generated
+  in Pandoc &lt; v2.8 or if the temporary directory could not be
+  created in Pandoc ≥ v2.8; the latter error cannot be caught.
+
+
+
+</dd>
+    <dt>
+    <a name = "tmp_fname"></a>
+    <strong>tmp_fname ([dir[, templ='tmp-XXXXXX']])</strong>
+    </dt>
+    <dd>
+    Generate a name for a temporary file.
+
+    <h3>Caveats:</h3>
+    <ul>
+          Another process may create a file of the same name between the time
+ <code>tmp_fname</code> checks whether that name is in use and the time it returns.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dir</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A directory to prefix the filename with.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">templ</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A template for the filename.
+  &lsquo;X&rsquo;s are replaced with random alphanumeric characters.
+         (<em>default</em> 'tmp-XXXXXX')
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A filename.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if the generated filename is in use.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "with_tmp_file"></a>
+    <strong>with_tmp_file (func[, dir[, templ]])</strong>
+    </dt>
+    <dd>
+    Run a function with a temporary file.</p>
+
+<p> Generates a temporary filename. Does <em>not</em> create that file.
+ If the function raises an error or returns <code>nil</code> or <code>false</code>,
+ the file of that name is deleted.
+
+    <h3>Caveats:</h3>
+    <ul>
+          The temporary file may have been created by <em>another</em> process. If that
+ file is located within a directory that other users have write access
+ to (e.g., <code>/tmp</code>), this is a security issue!</p>
+
+<p> Moreover, if Pandoc exits because it catches a signal (e.g., because
+ the user presses <code>Ctrl</code>-<code>c</code>), the file will <em>not</em> be deleted. This
+ is a <a href="https://github.com/jgm/pandoc/issues/7355">bug</a> in Pandoc.
+    </ul>
+    </ul>
+    </ul>
+    <h3>Side-effects:</h3>
+    <ul>
+         May print error messages to STDERR.
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">func</span>
+            <span class="types"><span class="type">func</span></span>
+         Given the name of the temporary file.
+  Must <em>not</em> change the working directory!
+        </li>
+        <li><span class="parameter">dir</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A directory to prefix the name
+  of the temporary file with. See <a href="index.html#tmp_fname">tmp_fname</a>.
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">templ</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A template for the name
+  of the temporary file. See <a href="index.html#tmp_fname">tmp_fname</a>.
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The values returned by the function.
+    </ol>
+
+    <h3>Raises:</h3>
+    An error if no unused temporary filename could be generated.
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Paths"></a>Paths </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "path_join"></a>
+    <strong>path_join (...)</strong>
+    </dt>
+    <dd>
+    Join path segments.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         Path segments.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A path.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; path_join(<span class="string">'foo'</span>, <span class="string">'bar'</span>)
+foo/bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "path_normalise"></a>
+    <strong>path_normalise (path)</strong>
+    </dt>
+    <dd>
+    Normalise a path.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">path</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A path.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A normalised path.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; path_normalise <span class="string">'./foo/./bar//'</span>
+foo/bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "path_prettify"></a>
+    <strong>path_prettify (path)</strong>
+    </dt>
+    <dd>
+    <p>Prettify a path.</p>
+
+<p> Steps:</p>
+
+<ol>
+<li>The path is normalised.</li>
+<li>The current working directory is removed from its beginning.</li>
+<li>The user&rsquo;s home directory is replaced with &lsquo;~&rsquo;,
+ but only on POSIX systems.</li>
+</ol>
+
+
+    </ul>
+    </ul>
+    <h3>Requires:</h3>
+    <ul>
+          Pandoc ≥ v2.12 to remove the working directory from a path;
+ in earlier versions, this step is skipped.
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">path</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A path.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A prettier path.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; path_prettify(env_sub <span class="string">'${HOME}/foo/./bar//'</span>)
+~/foo/bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "path_split"></a>
+    <strong>path_split (path)</strong>
+    </dt>
+    <dd>
+    Split a path into a directory and a filename.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">path</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         A path.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        The directory the file is in.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        The file&rsquo;s name.</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; path_split <span class="string">'foo/bar'</span>
+foo    bar</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "project_dir"></a>
+    <strong>project_dir ()</strong>
+    </dt>
+    <dd>
+    Guess the project directory.</p>
+
+<p> The project directory is the directory of the first input file <em>not</em>
+ named &lsquo;-&rsquo; (i.e., of the first actual input file). If there is no such
+ file, the project directory is the current working directory.
+
+    </ul>
+    </ul>
+    <h3>Requires:</h3>
+    <ul>
+         The working directory is represented by &lsquo;.&rsquo; in Pandoc &lt; v2.8.
+    </ul>
+    </ul>
+    </ul>
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A directory.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Warnings"></a>Warnings </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "xwarn"></a>
+    <strong>xwarn (...)</strong>
+    </dt>
+    <dd>
+    Print a message to STDERR.</p>
+
+<p> <h3>Printout:</h3></p>
+
+<p> Prefixed with the filename of the script and &lsquo;: &rsquo;,
+ and terminated with <a href="index.html#EOL">EOL</a>.
+ Non-string values are coerced to strings.</p>
+
+<p> <h3>Message priority:</h3></p>
+
+<p> Messages are only printed if their priority is greater or equal to
+ <code>PANDOC_STATE.verbosity</code>.</p>
+
+<p> <h3>Variable substitution:</h3></p>
+
+<p> If string values contain variable names, they are replaced with the
+ values of the local variables, the upvalues of the calling function,
+ or, if there are no local variables or upvalues of the given names,
+ <code>_ENV</code>. See <a href="index.html#vars_sub">vars_sub</a> for the syntax and <a href="index.html#vars_get">vars_get</a> for limitations.</p>
+
+<p> <h3>Options:</h3></p>
+
+<p> String values starting with an &lsquo;@&rsquo; are interpreted as options:</p>
+
+<ul>
+<li>&lsquo;@error&rsquo;, &lsquo;@warning&rsquo;, &lsquo;@info&rsquo;: Set the message&rsquo;s priority.
+(<em>default</em> &lsquo;warning&rsquo;)</li>
+<li>&lsquo;@noopts&rsquo;: Turn option processing off. (<em>default</em> on)</li>
+<li>&lsquo;@novars&rsquo;: Turn variable substitution off. (<em>default</em> on)</li>
+<li>&lsquo;@plain&rsquo;: Turn variable substitution <em>and</em> option processing off.</li>
+<li>&lsquo;@vars&rsquo;: Turn variable substitution on.</li>
+</ul>
+
+
+<p> Options are case-sensitive. Unknown options are ignored silently.
+
+    </ul>
+    </ul>
+    <h3>Requires:</h3>
+    <ul>
+          Pandoc ≥ v2.4 to respect <code>--quiet</code> and <code>--verbose</code>;
+ in earlier versions, those options are ignored.
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         Messages. At least one must be given.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Elements"></a>Elements </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "elem_clone"></a>
+    <strong>elem_clone (elem)</strong>
+    </dt>
+    <dd>
+    Make a shallow copy of a Pandoc AST element.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">elem</span>
+            <span class="types"><span class="type">pandoc.AstElement</span></span>
+         A Pandoc AST element.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">pandoc.AstElement</span></span>
+        The clone.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "elem_type"></a>
+    <strong>elem_type (elem)</strong>
+    </dt>
+    <dd>
+    Get the type of a Pandoc AST element.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">elem</span>
+            <span class="types"><span class="type">pandoc.AstElement</span></span>
+         A Pandoc AST element.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        A type (e.g., &lsquo;Str&rsquo;).</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">nil</span></span>
+        A super-type (e.g., &lsquo;Block&rsquo; or &lsquo;Meta&rsquo;).</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a> or <span class="type">nil</span></span>
+        ⋮.</li>
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if the given value is not a Pandoc AST element.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "elem_walk"></a>
+    <strong>elem_walk (elem, filter)</strong>
+    </dt>
+    <dd>
+    Walk an AST element and apply a filter to matching elements.</p>
+
+<p> <h3>Differences to Pandoc&rsquo;s Walkers:</h3></p>
+
+<ul>
+<li>The filter is applied to the given element itself.</li>
+<li>Changes to the AST, other than returning a new element, are ignored.</li>
+<li>The AST is traversed bottom-up or top-down, but <em>not</em> typewise.</li>
+<li>Support for filter keyword &lsquo;AstElement&rsquo;, which matches <em>any</em> element,
+but <em>not</em> lists of elements.</li>
+<li>Documents and metadata are traversed, too.</li>
+</ul>
+
+
+<p> <h3>Direction of Traversal:</h3></p>
+
+<p> Depends on the filter&rsquo;s <code>traverse</code> field:</p>
+
+<ul>
+<li><code>bottomup</code>: Traverse the AST bottom-up.</li>
+<li><code>topdown</code>: Traverse the AST top-down. (<em>default</em>)</li>
+</ul>
+
+
+<p> The AST is traversed left-to-right either way.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">elem</span>
+            <span class="types"><span class="type">pandoc.AstElement</span></span>
+         A Pandoc AST element.
+        </li>
+        <li><span class="parameter">filter</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">{string=func,...}</a></span>
+         A filter.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Typically but not necessarily, a new Pandoc AST element.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Options"></a>Options </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Options"></a>
+    <strong>Options</strong>
+    </dt>
+    <dd>
+    An option list.
+
+    </ul>
+    <h3>Prototype:</h3>
+    <ul>
+         <a href="index.html#Object">Object</a>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#opts_parse">opts_parse</a></li>
+         <li><a href="index.html#Options:new">Options:new</a></li>
+         <li><a href="index.html#Options:add">Options:add</a></li>
+         <li><a href="index.html#Options:parse">Options:parse</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Options:new"></a>
+    <strong>Options:new (...)</strong>
+    </dt>
+    <dd>
+    <p>Create a new option list.</p>
+
+<pre><code>opts = Options:new{name = 'foo'}
+</code></pre>
+
+<p> is equivalent to:</p>
+
+<pre><code>opts = Options()
+opts:add{name = 'foo'}
+</code></pre>
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">tab</span></span>
+         Option definitions.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Options:add">Options:add</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Options:add"></a>
+    <strong>Options:add (...)</strong>
+    </dt>
+    <dd>
+    Add an option to the list.
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">tab</span></span>
+         Option definitions.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#opts_parse">opts_parse</a></li>
+         <li><a href="index.html#Options:parse">Options:parse</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">opts = Options()
+opts:add{
+    name = <span class="string">'bar'</span>,
+    <span class="global">type</span> = <span class="string">'number'</span>,
+    parse = <span class="keyword">function</span> (x)
+        <span class="keyword">if</span> x &lt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">nil</span>, <span class="string">'not a positive number.'</span> <span class="keyword">end</span>
+        <span class="keyword">return</span> x
+    <span class="keyword">end</span>
+}</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Options:parse"></a>
+    <strong>Options:parse (meta)</strong>
+    </dt>
+    <dd>
+    Parse options from a metadata block (OO-interface).
+
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">meta</span>
+            <span class="types"><span class="type">pandoc.MetaMap</span></span>
+         A metadata block.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">tab</span></span>
+        A mapping of option names to values.
+    </ol>
+     <h3>Or</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">nil</span></span>
+        <code>nil</code> if an error occurred.</li>
+        <li>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+        An error message.</li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="index.html#opts_parse">opts_parse</a></li>
+         <li><a href="index.html#Options:add">Options:add</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; meta = pandoc.MetaMap{
+&gt;     [<span class="string">'foo-bar'</span>] = pandoc.MetaInlines(pandoc.List{
+&gt;         pandoc.Str <span class="string">"0123"</span>
+&gt;     })
+&gt; parser = Options()
+&gt; parser:add{
+&gt;     name = <span class="string">'bar'</span>,
+&gt;     prefix = <span class="string">'foo'</span>,
+&gt;     <span class="global">type</span> = <span class="string">'number'</span>,
+&gt;     parse = <span class="keyword">function</span> (x)
+&gt;         <span class="keyword">if</span> x &lt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">nil</span>, <span class="string">'not a positive number.'</span> <span class="keyword">end</span>
+&gt;         <span class="keyword">return</span> x
+&gt;     <span class="keyword">end</span>
+&gt; }
+&gt; opts = parser:parse(meta)
+&gt; opts.bar
+<span class="number">123</span>
+&gt; <span class="global">type</span>(opts.bar)
+number</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "opts_parse"></a>
+    <strong>opts_parse (meta, ...)</strong>
+    </dt>
+    <dd>
+    Parse options from a metadata block (function interface).</p>
+
+<p> <h3>Option Definition Syntax:</h3></p>
+
+<p> An option definition is a table with the following keys:</p>
+
+<ul>
+<li><code>name</code>: (<strong><em><a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></em></strong>) An option name.</li>
+<li><code>type</code>: (<strong><em><a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></em></strong>) An option type. (<em>default</em> &lsquo;string&rsquo;)</li>
+<li><code>parse</code>: (<strong><em>func</em></strong>) A parser. (<em>optional</em>)</li>
+<li><code>prefix</code>: (<strong><em><a href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></em></strong>) A prefix. (<em>optional</em>)</li>
+</ul>
+
+
+<p> <h3>Mapping of Option Names to Metadata Fieldnames:</h3></p>
+
+<p> The name of the metadata field is the name of the option with
+ underscores replaced by dashes. If the option has a prefix,
+ then the fieldname is prefixed with that prefix and a dash <em>after</em>
+ underscores have been replaced with dashes.</p>
+
+<p> In Lua:</p>
+
+<pre><code>fieldname = name:gsub('_', '-')
+if prefix then fieldname = prefix .. '-' .. fieldname end
+</code></pre>
+
+<p> <h3>Type Declaration Grammar:</h3></p>
+
+<p> Configuration values can be of any of three types:</p>
+
+<ul>
+<li>&lsquo;number&rsquo;</li>
+<li>&lsquo;string&rsquo;</li>
+<li>&lsquo;list&rsquo;</li>
+</ul>
+
+
+<p> If an option is declared to be of the scalar types &lsquo;number&rsquo; or &lsquo;string&rsquo;
+ its value is required to be of the Lua type of the same name. However,
+ values are converted automatically if possible.</p>
+
+<p> If an option is declared to be a &lsquo;list&rsquo;, its value is required to be a
+ <code>pandoc.List</code>. However, if a scalar value is encountered where a list
+ is expected, the value is wrapped in a single-item list automatically.</p>
+
+<p> The items of a list must all be of the same type, which is declared by
+ appending &lsquo;&lt;<em>T</em>>&rsquo; to the literal &lsquo;list&rsquo;, where <em>T</em> is either the name
+ of a scalar type or another list declaration; it defaults to &lsquo;string&rsquo;.</p>
+
+<p> An option can be declared to be of any of a list of types separated
+ by the pipe symbol (&lsquo;|&rsquo;), for example, &lsquo;string|list&rsquo;. The first type
+ that matches &lsquo;wins&rsquo;, even if winning requires a type conversion
+ (i.e., &lsquo;string|number&rsquo; is, effectively, the same as &lsquo;string&rsquo;).</p>
+
+<p> In <a href="https://en.wikipedia.org/wiki/EBNF">Extended Backus-Naur Form</a>:</p>
+
+<blockquote><p>Scalar = &lsquo;number&rsquo; | &lsquo;string&rsquo;</p>
+
+<p>List = &lsquo;list&rsquo;, [ &lsquo;&lt;&rsquo;, ( scalar | list ), &lsquo;>&rsquo; ]</p>
+
+<p>Type = list | scalar</p>
+
+<p>Type list = type, { &lsquo;|&rsquo;, type }</p></blockquote>
+
+<p> No type checks or conversions are performed for <code>nil</code>.</p>
+
+<p> <h3>Parse Protocol:</h3></p>
+
+<p> Parsers are given the converted value and should return
+ either a new value or <code>nil</code> and an error message.
+ They are <em>not</em> called for <code>nil</code>.
+
+    <h3>Caveats:</h3>
+    <ul>
+          <a href="index.html#Options:add">Options:add</a> throws an error if it is given a wrong option type
+ (e.g., &lsquo;int&rsquo; or &lsquo;list[number]&rsquo;). <code>opts_parse</code> accepts wrong option
+ types and only throws an error if it encounters an option that is
+ supposed to be of that type.
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+    </ul>
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">meta</span>
+            <span class="types"><span class="type">pandoc.MetaMap</span></span>
+         A metadata block.
+        </li>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">Option</span></span>
+         Option definitions.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">tab</span></span>
+        A mapping of option names to values.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Options">Options</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">&gt; meta = pandoc.MetaMap{
+&gt;     [<span class="string">'foo-bar'</span>] = pandoc.MetaInlines(pandoc.List{
+&gt;         pandoc.Str <span class="string">"0123"</span>
+&gt;     })
+&gt; opts = opts_parse(meta, {
+&gt;     name = <span class="string">'bar'</span>,
+&gt;     prefix = <span class="string">'foo'</span>,
+&gt;     <span class="global">type</span> = <span class="string">'number'</span>,
+&gt;     parse = <span class="keyword">function</span> (x)
+&gt;         <span class="keyword">if</span> x &lt; <span class="number">1</span> <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">nil</span>, <span class="string">'not a positive number.'</span> <span class="keyword">end</span>
+&gt;         <span class="keyword">return</span> x
+&gt;     <span class="keyword">end</span>
+&gt; })
+&gt; opts.bar
+<span class="number">123</span>
+&gt; <span class="global">type</span>(opts.bar)
+number</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2022-04-13 22:42:16 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

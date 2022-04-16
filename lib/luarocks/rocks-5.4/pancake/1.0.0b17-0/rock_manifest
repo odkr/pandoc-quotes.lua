@@ -1,0 +1,15 @@
+rock_manifest = {
+   doc = {
+      [".nojekyll"] = "d41d8cd98f00b204e9800998ecf8427e",
+      ["config.ld"] = "033c621e4938b5e368e82e342616f5fa",
+      ["index.html"] = "cf5d20d2dd74f8d56e1a034a3e3ae0fb",
+      ["ldoc.css"] = "e2b04e90ff648f8e00d9d4d458de59d9",
+      topics = {
+         ["README.md.html"] = "740ff33bb6d955689b267ea19c2e43af"
+      }
+   },
+   lua = {
+      ["pancake.lua"] = "a5add8873f87f1da58be0e8b385cef39"
+   },
+   ["pancake-1.0.0b17-0.rockspec"] = "e3f624f00785814446cd426f1bc5951e"
+}
