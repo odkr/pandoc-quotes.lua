@@ -205,6 +205,7 @@ local pancake = require 'pancake'
 local M = {}
 
 local assert = assert
+local pairs = pairs
 local type = type
 local setmetatable = setmetatable
 
@@ -220,8 +221,9 @@ local _ENV = M
 -- ----------
 
 local elem_walk = pancake.elem_walk
-local insert = table.insert
 local remove = table.remove
+local asserter = pancake.asserter
+local protect = pancake.protect
 local tabulate = pancake.tabulate
 local update = pancake.update
 local xwarn = pancake.xwarn
@@ -326,7 +328,7 @@ function check_marks (marks)
     elseif n > 4 then err = 'too many'
                  else return marks
     end
-    return nil, err .. ' quotation marks given.'
+    return nil, err .. ' quotation marks.'
 end
 
 function check_lang (lang)
@@ -335,6 +337,22 @@ function check_lang (lang)
 end
 
 local parser = pancake.Options(
+    {
+        prefix = 'quotation-mark',
+        name = 'db',
+        type = 'map<string|list>',
+        parse = protect(
+            function (m)
+                -- luacheck: ignore assert
+                local assert = asserter()
+                for k, v in pairs(m) do
+                    assert(check_lang(k))
+                    assert(check_marks(v))
+                end
+                return m
+            end
+        )
+    },
     {
         prefix = 'quotation',
         name = 'marks',
@@ -361,19 +379,32 @@ function main (doc)
         return
     end
 
+    local db = update({}, DB, opts.db)
+
     local marks = opts.marks
-    local lang = opts.quotation_lang or opts.lang
-    local db = update({}, DB)
+    if not marks then
+        local lang = opts.quotation_lang
+        if lang then
+            marks = db[lang]
+            if not marks then
+                xwarn('@error', '${lang}: no quotation marks defined.')
+                return
+            end
+        end
+    end
+
+    local lang = opts.lang
     if not (marks or lang) then return end
 
-    function lookup (lang)
+    -- luacheck: ignore lang marks
+    local function lookup (lang)
         local marks = db[lang]
         if marks then return marks end
         lang = assert(lang:match '^%a+')
         local marks = db[lang]
         if marks then return marks end
         for tag, marks in pairs(db) do
-            if db:match('^' .. lang .. '-') then
+            if tag:match('^' .. lang .. '-') then
                 return marks
             end
         end
@@ -428,7 +459,7 @@ function main (doc)
             remove(langs, i)
             i = i - 1
         end
-        return parent
+        return elem
     end})
     return doc
 end

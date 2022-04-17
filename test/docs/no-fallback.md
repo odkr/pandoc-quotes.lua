@@ -1,5 +1,5 @@
 ---
-quotation-marks-by-lang:
+quotation-mark-db:
     xxx-zz:
         - LDQUO
         - RDQUO
