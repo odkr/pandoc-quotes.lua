@@ -181,6 +181,7 @@ if not pandoc.utils then pandoc.utils = require 'pandoc.utils' end
 local _ENV = M
 
 local text = require 'text'
+local string = require 'string'
 
 
 -- # CONSTANTS
