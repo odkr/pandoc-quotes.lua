@@ -8,7 +8,7 @@ You can define which typographic quotation marks to replace plain ones with by
 setting either a document's `quot-marks`, `quot-lang`, or `lang` metadata
 field. Typically, it should 'just work'.
 
-See the [manual page](man/pandoc-quotes.lua.md) for details.
+See the [manual page](man/man1/pandoc-quotes.lua.md) for details.
 
 
 ## Installing `pandoc-quotes.lua`
